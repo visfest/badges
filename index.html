@@ -45,6 +45,7 @@
   </head>
   <body>
     <svg></svg>
+    <canvas></canvas>
     <div class="overlay">
       <div class="container">
         <span class="first-name">Victor</span>
@@ -59,6 +60,8 @@ var svg = d3.select('svg')
   .attr({width: w, height: h })
 var overlay = d3.select('.overlay')
   .style({width: w + 'px', height: h + 'px' })
+
+var canvas = d3.select('canvas')
 
     </script>
   </body>
