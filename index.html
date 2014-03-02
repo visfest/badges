@@ -31,16 +31,23 @@ var w = 1050, h = 1500
 var svg = d3.select('svg').attr({width: w, height: h })
 var iframe = d3.select('iframe')
 var overlay = d3.select('.overlay').style({width: w + 'px', height: h + 'px' })
+window.is_ready = false
 
-iframe.node().onload = function() {
-  console.log('loaded')
+function loaded() {
   iframe.style({width: w + 'px', height: h + 'px' })
-  setInterval(function(){
-    iframe.node().contentWindow.step()
-    console.log('step')
-  }, 1000)
+  window.step = function(){ iframe.node().contentWindow.step() }
+  window.is_ready = true
 }
 
+// setTimeout(function(){
+//   window.is_ready = true
+// }, 1000)
+
+function checkLoaded(){
+  if(iframe.node().contentWindow.document.readyState === 'complete') loaded()
+  else setTimeout(checkLoaded, 10)
+}
+checkLoaded()
     </script>
   </body>
 </html>

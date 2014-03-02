@@ -45,7 +45,10 @@ span{
 
 .bg-vis iframe{
   border: none;
-  -webkit-transform: scale(4) translate(28px, 472px);
+}
+
+iframe{
+  /*-webkit-transform: translate(28px, 472px);*/
 }
 
 .bg-vis{

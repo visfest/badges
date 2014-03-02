@@ -22,7 +22,8 @@ var maxRadius = 32, // maximum radius of circle
     padding = 1, // padding between circles; also minimum radius
     margin = {top: -maxRadius, right: -maxRadius, bottom: -maxRadius, left: -maxRadius},
     width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+
+width = 1050, height = 1500
 
 var k = 1, // initial number of candidates to consider per circle
     m = 10, // initial number of circles to add per frame
@@ -38,7 +39,9 @@ var svg = d3.select("body").append("svg")
 var hash = window.location.hash
 var frame = Number(hash.split('#')[1]) || 7
 
+var called_once = false
 function step(){
+  if(!called_once) return called_once = true, null
   for(var i = 0; i < 10; i++) _step()
 }
 
