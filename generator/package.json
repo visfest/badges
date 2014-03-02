@@ -1,0 +1,8 @@
+{
+  "name": "gif-generator",
+  "version": "0.0.1",
+  "dependencies": {
+    "node-phantom": "~0.2.5",
+    "phantom": "^0.5.4"
+  }
+}
