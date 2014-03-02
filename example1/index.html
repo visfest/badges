@@ -36,8 +36,8 @@ body {
 
 </style>
 <body>
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="../d3.js" charset="utf-8"></script>
+<script src="../topojson.js" charset="utf-8"></script>
 <script>
 
 var width = 960,
@@ -76,6 +76,7 @@ svg.append("path")
     .attr("class", "graticule")
     .attr("d", path);
 
+
 d3.json("world-50m.json", function(error, world) {
   var land = svg.insert('path', '.graticule')
     .datum(topojson.feature(world, world.objects.land))
@@ -85,12 +86,9 @@ d3.json("world-50m.json", function(error, world) {
     .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
     .attr('class', 'boundary')
 
-  var i = 0
-  setInterval(function(){
-    projection.rotate([i++, 0])
-    land.attr('d', path)
-    boundary.attr('d', path)
-  }, 100)
+  projection.rotate([0, 0])
+  land.attr('d', path)
+  boundary.attr('d', path)
 });
 
 d3.select(self.frameElement).style("height", height + "px");
