@@ -86,7 +86,10 @@ d3.json("world-50m.json", function(error, world) {
     .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
     .attr('class', 'boundary')
 
-  projection.rotate([0, 0])
+  var hash = window.location.hash
+  var frame = Number(hash.split('#')[1]) || 0
+  var frames = 10
+  projection.rotate([frame / (frames - 1) * 180, 0])
   land.attr('d', path)
   boundary.attr('d', path)
 });
