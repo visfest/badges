@@ -7,7 +7,8 @@
   </head>
   <body>
     <div class="bg-vis">
-      <iframe src="example1/index.html#1"></iframe>
+      <!-- <iframe src="badges/b1/index.html"></iframe> -->
+      <iframe src="badges/b2/index.html"></iframe>
     </div>
     <div class="overlay">
       <div class="container">
@@ -32,7 +33,12 @@ var iframe = d3.select('iframe')
 var overlay = d3.select('.overlay').style({width: w + 'px', height: h + 'px' })
 
 iframe.node().onload = function() {
+  console.log('loaded')
   iframe.style({width: w + 'px', height: h + 'px' })
+  setInterval(function(){
+    iframe.node().contentWindow.step()
+    console.log('step')
+  }, 1000)
 }
 
     </script>
