@@ -16,7 +16,7 @@ svg{
 .overlay{
   text-align: center;
   box-sizing: border-box;
-  border: 1px solid red;
+  /*border: 1px solid red;*/
   position: absolute;
   top: 0px;
   left: 0px;

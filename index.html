@@ -7,8 +7,8 @@
   </head>
   <body>
     <div class="bg-vis">
-      <!-- <iframe src="badges/b1/index.html"></iframe> -->
-      <iframe src="badges/b2/index.html"></iframe>
+      <iframe src="badges/b1/index.html"></iframe>
+      <!-- <iframe src="badges/b2/index.html"></iframe> -->
     </div>
     <div class="overlay">
       <div class="container">
@@ -34,9 +34,13 @@ var overlay = d3.select('.overlay').style({width: w + 'px', height: h + 'px' })
 window.is_ready = false
 
 function loaded() {
+  console.log('loaded')
   iframe.style({width: w + 'px', height: h + 'px' })
   window.step = function(){ iframe.node().contentWindow.step() }
-  window.is_ready = true
+  if(iframe.node().contentWindow.is_ready) window.is_ready = true
+  else iframe.node().contentWindow.ready = function(){
+    window.is_ready = true
+  }
 }
 
 // setTimeout(function(){

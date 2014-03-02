@@ -29,7 +29,7 @@ page.open(url, function(status){
     console.log('ready!')
     for(frame = 0; frame < frames; frame++){
       page.evaluate(function(){ if(window.step) window.step() })
-      page.render("gif/test-"+ frame +".png", { format: "png" })
+      page.render("output/test-"+ frame +".png", { format: "png" })
     }
     phantom.exit()
   }

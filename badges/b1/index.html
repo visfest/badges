@@ -5,6 +5,7 @@
 
 body {
   background: #333;
+  margin: 0;
 }
 
 .stroke {
@@ -40,12 +41,11 @@ body {
 <script src="../../topojson.js" charset="utf-8"></script>
 <script>
 
-var width = 960,
-    height = 500;
+var width = 1050, height = 1500
 
 var projection = d3.geo.conicEquidistant()
-    .center([0, 15])
-    .scale(128)
+    .center([0, 5])
+    .scale(510)
     .translate([width / 2, height / 2])
     .precision(.1);
 
@@ -76,23 +76,29 @@ svg.append("path")
     .attr("class", "graticule")
     .attr("d", path);
 
+var land, boundary
 
 d3.json("world-50m.json", function(error, world) {
-  var land = svg.insert('path', '.graticule')
+  land = svg.insert('path', '.graticule')
     .datum(topojson.feature(world, world.objects.land))
     .attr("class", "land")
 
-  var boundary = svg.insert("path", ".graticule")
+  boundary = svg.insert("path", ".graticule")
     .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
     .attr('class', 'boundary')
+  if(window.ready){
+    ready()
+  }
+  window.is_ready = true
+});
 
-  var hash = window.location.hash
-  var frame = Number(hash.split('#')[1]) || 0
-  var frames = 10
-  projection.rotate([frame / (frames - 1) * 180, 0])
+var frames = 10
+  , frame = 0
+function step(){
+  projection.rotate([frame++ / (frames - 1) * 90, 0])
   land.attr('d', path)
   boundary.attr('d', path)
-});
+}
 
 d3.select(self.frameElement).style("height", height + "px");
 

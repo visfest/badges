@@ -20,5 +20,5 @@ After generating the JPGs we generate the actual GIF from the JPG frames.
 We use the **convert** command which comes with Imagemagick
 
 ```
-convert -loop 0 gif/test-*.jpg test.gif
+convert -loop 0 output/test-*.png test.gif
 ```
