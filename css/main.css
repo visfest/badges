@@ -1,0 +1,67 @@
+body, html{
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+}
+
+svg{
+  /*background-color: blue;*/
+  box-sizing: border-box;
+  border: 1px solid red;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+.overlay{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  text-align: center;
+}
+
+span{
+  display: block;
+}
+
+.container{
+  margin: 5em;
+}
+
+.first-name{
+  font-size: 8em;
+}
+
+.last-name{
+  font-size: 14em;
+}
+
+.github-name, .github-logo {
+  display: inline-block;
+}
+
+.github-logo img {
+  width: 100px;
+}
+
+.github-name{
+  font-size: 6em;
+}
+
+.conf-id {
+  position: absolute;
+  bottom: 50px;
+  left: 200px; 
+}
+
+.conf-id img {
+  width: 700px; 
+}
+
+.date {
+  position: absolute;
+  bottom: 10px;
+  left: 400px;  
+}
