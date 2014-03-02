@@ -41,11 +41,13 @@
       .github-name{
         font-size: 4em;
       }
+      iframe{
+        border: none;
+      }
     </style>
   </head>
   <body>
-    <svg></svg>
-    <canvas></canvas>
+    <iframe src="example1/index.html"></iframe>
     <div class="overlay">
       <div class="container">
         <span class="first-name">Victor</span>
@@ -58,8 +60,11 @@
 var w = 1050, h = 1500
 var svg = d3.select('svg')
   .attr({width: w, height: h })
+var iframe = d3.select('iframe')
 var overlay = d3.select('.overlay')
   .style({width: w + 'px', height: h + 'px' })
+
+iframe.style({width: w + 'px', height: h + 'px' })
 
 var canvas = d3.select('canvas')
 
