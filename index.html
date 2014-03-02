@@ -13,17 +13,17 @@
       }
       svg{
         /*background-color: blue;*/
-        box-sizing: border-box;
-        border: 1px solid red;
         position: absolute;
         top: 0px;
         left: 0px;
       }
       .overlay{
+        text-align: center;
+        box-sizing: border-box;
+        border: 1px solid red;
         position: absolute;
         top: 0px;
         left: 0px;
-        text-align: center;
       }
       span{
         display: block;
@@ -43,11 +43,22 @@
       }
       iframe{
         border: none;
+        -webkit-transform: scale(4) translate(28px, 472px);
+        width: inherit;
+        height: inherit;
+      }
+      .bg-vis{
+        overflow: hidden;
+        position: absolute;
+        top: 0px;
+        left: 0px;
       }
     </style>
   </head>
   <body>
-    <iframe src="example1/index.html"></iframe>
+    <div class="bg-vis">
+      <iframe src="example1/index.html"></iframe>
+    </div>
     <div class="overlay">
       <div class="container">
         <span class="first-name">Victor</span>
@@ -58,15 +69,18 @@
     <script src="d3.js" charset="utf-8"></script>
     <script>
 var w = 1050, h = 1500
-var svg = d3.select('svg')
-  .attr({width: w, height: h })
+var svg = d3.select('svg').attr({width: w, height: h })
 var iframe = d3.select('iframe')
 var overlay = d3.select('.overlay')
   .style({width: w + 'px', height: h + 'px' })
 
 iframe.style({width: w + 'px', height: h + 'px' })
-
+console.log({width: w + 'px', height: h + 'px' })
 var canvas = d3.select('canvas')
+
+setTimeout(function(){
+  iframe.style({width: w + 'px', height: h + 'px' })
+}, 1000)
 
     </script>
   </body>
