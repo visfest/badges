@@ -7,18 +7,16 @@ body, html{
   color: #fff;
   text-shadow: 0px -4px 0px rgba(0,0,0,0.8);
 }
-
 svg{
   /*background-color: blue;*/
   position: absolute;
   top: 0px;
   left: 0px;
 }
-
 .overlay{
   text-align: center;
   box-sizing: border-box;
-  border: 1px solid red;
+  /*border: 1px solid red;*/
   position: absolute;
   top: 0px;
   left: 0px;
@@ -49,11 +47,12 @@ span{
   font-size: 6em;
 }
 
-iframe{
+.bg-vis iframe{
   border: none;
-  -webkit-transform: scale(4) translate(28px, 472px);
-  width: inherit;
-  height: inherit;
+}
+
+iframe{
+  /*-webkit-transform: translate(28px, 472px);*/
 }
 
 .bg-vis{
