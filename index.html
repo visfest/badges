@@ -35,9 +35,8 @@ var overlay = d3.select('.overlay').style({width: w + 'px', height: h + 'px' })
 window.is_ready = false
 
 function loaded() {
-  console.log('loaded')
   iframe.style({width: w + 'px', height: h + 'px' })
-    .attr('src', decodeURIComponent(window.location.hash.split('#')[1]) || 'badges/b1/index.html')
+    .attr('src', decodeURIComponent(window.location.hash.split('#')[1] || '') || 'badges/b1/index.html')
   window.step = function(){ iframe.node().contentWindow.step() }
   if(iframe.node().contentWindow.is_ready) window.is_ready = true
   else iframe.node().contentWindow.ready = function(){
