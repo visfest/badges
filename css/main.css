@@ -35,16 +35,17 @@ span{
 }
 
 .first-name{
-  font-size: 6em;
+  font-size: 132px;
+  margin-top: 100px;
 }
 
 .last-name{
-  font-size: 14em;
+  font-size: 58px;
   line-height: 1em;
 }
 
 .github-name{
-  font-size: 6em;
+  font-size: 86px;
 }
 
 .bg-vis iframe{
@@ -62,34 +63,28 @@ iframe{
   left: 0px;
 }
 
+#github {
+  margin: 80px 0 30px 0;
+}
+
 .github-name, .github-logo {
   display: inline-block;
 }
 
 .github-logo img {
   position: relative;
-  width: 140px;
-}
-
-
-.logo-white {
-  top: 4px;
-  left: -144px;
-}
-
-.logo-black {
-  top: 0px;
-  left: 0px;
+  width: 80px;
+  margin: 0 20px 0 0;
 }
 
 .conf-id {
   position: absolute;
   bottom: 70px;
-  left: 180px; 
+  left: 100px; 
 }
 
 .conf-id img {
-  width: 700px; 
+  width: 850px; 
 }
 
 .date {
