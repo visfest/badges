@@ -7,7 +7,7 @@
 // page.clipRect = { top: 0, left: 0, width: 900, height: 800};
 // page.viewportSize = { width: 900, height: 800};
 
-var url = 'http://localhost:8080/index.html#badges/b3/index.html';
+var url = 'http://localhost:8080/index.html#badges/b4/index.html';
 
 var frames = 10
 var frame = 0
