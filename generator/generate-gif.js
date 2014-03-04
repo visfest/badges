@@ -7,7 +7,29 @@
 // page.clipRect = { top: 0, left: 0, width: 900, height: 800};
 // page.viewportSize = { width: 900, height: 800};
 
-var url = 'http://localhost:8080/index.html#badges/b4/index.html';
+// var opts = {
+//    url: 'badges/b3/index.html'
+//   , firstName: 'Victor'
+//   , lastName: 'Powell'
+//   , githubName: 'vicapow'
+// }
+
+// var opts = {
+//    url: 'badges/b1/index.html'
+//   , firstName: 'Ian'
+//   , lastName: 'Johnson'
+//   , githubName: 'enjalot'
+// }
+
+var opts = {
+   url: 'badges/b2/index.html'
+  , firstName: 'Paul'
+  , lastName: 'Van Slembrouck'
+  , githubName: 'ptvans'
+}
+
+var url = 'http://localhost:8080/index.html#'
+  + encodeURIComponent(JSON.stringify(opts));
 
 var frames = 10
 var frame = 0
@@ -29,7 +51,7 @@ page.open(url, function(status){
     console.log('ready!')
     for(frame = 0; frame < frames; frame++){
       page.evaluate(function(){ if(window.step) window.step() })
-      page.render("output/test-"+ frame +".png", { format: "png" })
+      page.render("output/" + opts.firstName + '-' + opts.lastName + "/frame-"+ frame +".png", { format: "png" })
     }
     phantom.exit()
   }

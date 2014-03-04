@@ -36,7 +36,28 @@ window.is_ready = false
 iframe.style({width: w + 'px', height: h + 'px' })
 var el =  iframe.node()
 window.step = function(){ el.contentWindow.step() }
-iframe.attr('src', decodeURIComponent(window.location.hash.split('#')[1] || '') || 'badges/b1/index.html')
+
+
+var opts = decodeURIComponent(window.location.hash.split('#')[1] || '')
+
+try{
+  opts = JSON.parse(opts)
+}catch(e){
+  opts = {
+      url: opts
+    , firstName: 'Victor'
+    , lastName: 'Powell'
+    , githubName: 'vicapow'
+  }
+}
+
+opts.url = opts.url || 'badges/b1/index.html'
+
+d3.select('.github-name').text(opts.githubName)
+d3.select('.first-name').text(opts.firstName)
+d3.select('.last-name').text(opts.lastName)
+
+iframe.attr('src', opts.url)
   .on('load', function(){
     ;(function check(){
       setTimeout(function(){
