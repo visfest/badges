@@ -14,19 +14,19 @@
 //   , githubName: 'vicapow'
 // }
 
-// var opts = {
-//    url: 'badges/b1/index.html'
-//   , firstName: 'Ian'
-//   , lastName: 'Johnson'
-//   , githubName: 'enjalot'
-// }
-
 var opts = {
-   url: 'badges/b2/index.html'
-  , firstName: 'Paul'
-  , lastName: 'Van Slembrouck'
-  , githubName: 'ptvans'
+   url: 'badges/b1/index.html'
+  , firstName: 'Ian'
+  , lastName: 'Johnson'
+  , githubName: 'enjalot'
 }
+
+// var opts = {
+//    url: 'badges/b2/index.html'
+//   , firstName: 'Paul'
+//   , lastName: 'Van Slembrouck'
+//   , githubName: 'ptvans'
+// }
 
 var url = 'http://localhost:8080/index.html#'
   + encodeURIComponent(JSON.stringify(opts));
