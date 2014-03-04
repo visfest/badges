@@ -80,7 +80,7 @@ iframe{
 
 .conf-id {
   position: absolute;
-  bottom: 70px;
+  bottom: 100px;
   left: 100px; 
 }
 
@@ -90,7 +90,7 @@ iframe{
 
 .date {
   position: absolute;
-  bottom: 20px;
+  bottom: 50px;
   left: 400px;  
   font-size: 2em;
   font-weight: 400;
