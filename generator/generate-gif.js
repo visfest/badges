@@ -7,7 +7,7 @@
 // page.clipRect = { top: 0, left: 0, width: 900, height: 800};
 // page.viewportSize = { width: 900, height: 800};
 
-var url = 'http://localhost:8080/index.html';
+var url = 'http://localhost:8080/index.html#badges/b4/index.html';
 
 var frames = 10
 var frame = 0
@@ -33,11 +33,10 @@ page.open(url, function(status){
     }
     phantom.exit()
   }
-  function checkReady(){
+  ;(function check(){
     console.log('is_ready', is_ready)
     var is_ready = page.evaluate(function() { return window.is_ready })
     if(is_ready) ready()
-    else setTimeout(checkReady, 10)
-  }
-  checkReady()
+    else setTimeout(check, 100)
+  })()
  })

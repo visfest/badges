@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="../../d3.js"></script>
+<style>
+  body{
+    margin: 0;
+  }
+</style>
+<script>
+
+var width = 960,
+    height = 500,
+    id = 0;
+
+width = window.innerWidth, height = window.innerHeight
+
+var voronoi = d3.geom.voronoi()
+    .clipExtent([[-1, -1], [width + 1, height + 1]]);
+
+var canvas = d3.select("body").append("canvas")
+    .attr("width", width)
+    .attr("height", height);
+
+var context = canvas.node().getContext("2d");
+
+var vertices = d3.range(400).map(function(){
+  return [ width * Math.random(), height * Math.random() ]
+})
+
+vertices.forEach(function(vertice){
+  var s = 20
+  vertice.velocity = [Math.random() * s - s / 2, Math.random() * s - s / 2]
+})
+
+function random_walk(){
+  vertices.forEach(function(vertice){
+    var s = 20, x = vertice[0], y = vertice[1]
+    // x += Math.random() * s - s / 2
+    // y += Math.random() * s - s / 2
+    x += vertice.velocity[0]
+    y += vertice.velocity[1]
+    if(x < 0){
+      x = 0
+      vertice.velocity[0] = - vertice.velocity[0]
+    }else if(x >= width){
+      x = width - 1
+      vertice.velocity[0] = -vertice.velocity[0]
+    }
+    if(y < 0){
+      y = 0
+      vertice.velocity[1] = - vertice.velocity[1]
+    }else if(y >= height){
+      y = height - 1
+      vertice.velocity[1] = - vertice.velocity[1]
+    }
+    vertice[0] = x
+    vertice[1] = y
+    // vertice[0] += vertice.velocity[0]
+    // vertice[1] += vertice.velocity[1]
+  })
+}
+
+  var shibe = new Image;
+  shibe.src = "shibe.jpg";
+  shibe.onload = loaded;
+
+  function loaded() {
+    window.is_ready = true
+  }
+
+function step(){
+  random_walk()
+  render()
+}
+
+// for debugging
+// setInterval(function(){
+//   step()
+// }, 100)
+
+function render() {
+  var cells = voronoi(vertices);
+
+  cells.forEach(function(cell) {
+    context.save();
+    path(cell);
+    context.clip();
+    context.drawImage(shibe, cell.point[0] - 90, cell.point[1] - 115);
+    context.stroke();
+    context.restore();
+  });
+}
+
+
+function path(cell) {
+  context.beginPath();
+  context.moveTo(cell[0][0], cell[0][1]);
+  for (var i = 1, n = cell.length; i < n; ++i) context.lineTo(cell[i][0], cell[i][1]);
+  context.closePath();
+}
+
+</script>
