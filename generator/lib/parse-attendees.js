@@ -31,5 +31,6 @@ function add_special_url(attendee){
   if(gh === 'vicapow') url = 'badges/b6/index.html'
   if(gh === 'ptvans')  url = 'badges/b10/index.html'
   if(gh === 'alignedleft') url = 'badges/b11/index.html'
+  if(gh === 'visnup') url = 'badges/b16/index.html'
   if(url) attendee.url = url
 }
