@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="../../d3.js"></script>
+<style>
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.cm-s-lesser-dark.CodeMirror { background: #1e2426; color: #696969;  }
+.cm-s-lesser-dark div.CodeMirror-selected {background: #064968 !important;} /* 33322B*/
+.cm-s-lesser-dark span.cm-variable { color:#22EFFF; }
+.cm-s-lesser-dark span.cm-variable-2 { color: #FFCCB4; }
+.cm-s-lesser-dark span.cm-variable-3 { color: white; }
+.cm-s-lesser-dark span.cm-string { color: Chartreuse; }
+.cm-s-lesser-dark span.cm-string-2 {color: Chartreuse;}
+.cm-s-lesser-dark span.cm-def {color: #FFCCB4; opacity: 1.0}
+.cm-s-lesser-dark span.cm-bracket { color: #EBEFE7; }
+.cm-s-lesser-dark pre { color:#FFF; }
+.cm-s-lesser-dark span.cm-comment { color: #AFB4B4;}
+.cm-s-lesser-dark span.cm-property {color: #FDA676;}
+.cm-s-lesser-dark span.cm-number { color: #FF92EE;}
+.cm-s-lesser-dark span.cm-keyword { color: #FFFF18; }
+.cm-s-lesser-dark .CodeMirror-cursor { border-left: 1px solid white !important; }
+
+
+</style>
+<script>
+
+// originally from: bl.ocks.org/RandomEtc/5165219
+
+var w = 1050,
+    h = 1500
+
+tributary = { sw: w, sh: h }
+// 16th century manuscript:  http://i.imgur.com/qq9bwnk.png
+// by @zeffii
+
+var body = d3.select("body").style("background-color", d3.rgb(25,25,25))
+body.append('svg')
+var svg = d3.select("svg");
+var group1 = svg.append("g").classed("group1", true);
+
+group1.attr("transform", "translate(" + [tributary.sw/2, tributary.sh/2 + 0] + ")")
+
+var radian_constant = Math.PI / 180;
+
+var line_thickness = 1.6,
+    fill_color = '#AEAEAE',
+    line_type = {
+        "stroke": fill_color, 
+        "stroke-width": line_thickness + "px",
+        "fill": 'none'
+    };
+
+var square_side = 1400,
+    new_ratio = 2,       // keep this value above 1
+    m = square_side / new_ratio / 2,  // circle radius
+    f = square_side/2,
+    faux = {x: 0, y: 0},
+    _s = get_second_internal(45, m, faux),
+  tdist = distance(_s, {x: m, y:-m}),
+    sxy = get_second_internal(-45, tdist, _s),
+    s = Math.abs(sxy.y),
+    k = m * 2,
+    ms = m - s;
+
+
+
+render()
+
+var steps = 0
+function step() {
+  if(steps++ > 10) return
+  new_ratio -= 0.1;
+  m = square_side / new_ratio / 2
+  f = square_side/2
+  faux = {x: 0, y: 0}
+  _s = get_second_internal(45, m, faux)
+  tdist = distance(_s, {x: m, y:-m})
+  sxy = get_second_internal(-45, tdist, _s)
+  s = Math.abs(sxy.y)
+  k = m * 2
+  ms = m - s
+  d3.select("svg").selectAll().remove();
+  render();
+  console.log("sup");
+}
+
+function render() {
+var multipliers = [
+  //first order tangent (internal)
+  [{x:-m, y:-f}, {x:-m, y: f}],
+  [{x: m, y:-f}, {x: m, y: f}],
+  [{x:-f, y:-m}, {x: f, y:-m}],
+  [{x:-f, y: m}, {x: f, y: m}],
+  // diagonals max
+  [{x:-f, y:-f}, {x: f, y: f}],
+  [{x:-f, y: f}, {x: f, y:-f}],
+  // outer
+  [{x:-f, y:-f}, {x: f, y:-f}],
+  [{x: f, y:-f}, {x: f, y: f}],
+  [{x: f, y: f}, {x:-f, y: f}],
+  [{x:-f, y: f}, {x:-f, y:-f}],
+  // first order internal
+  [{x:-s, y:-f}, {x:-s, y: f}],
+  [{x: s, y:-f}, {x: s, y: f}],
+  [{x:-f, y:-s}, {x: f, y:-s}],
+  [{x:-f, y: s}, {x: f, y: s}],
+  // (first, second) order diagonals
+  [{x:-m, y:-s}, {x:-s, y:-m}],
+  [{x: s, y:-m}, {x: m, y:-s}],
+  [{x: m, y: s}, {x: s, y: m}],
+  [{x:-s, y: m}, {x:-m, y: s}]
+];
+
+
+
+multipliers.forEach(function(datum){
+    draw_line(datum[0], datum[1])
+})
+
+
+var draw_list = [
+    {pos: {x:-m, y: m}, start_angle : 0},
+    {pos: {x: m, y: m}, start_angle : -90},
+    {pos: {x: m, y:-m}, start_angle : -180},
+    {pos: {x:-m, y:-m}, start_angle : -270}
+];
+
+draw_list.forEach(function(geom){
+  draw_arc(ms, geom.pos, geom.start_angle) // small arc
+    draw_arc(k, geom.pos, geom.start_angle)  // large arc
+})
+
+
+
+group1.append("circle")
+  .attr({"r": m})
+  .style(line_type)
+
+
+// helpers
+function draw_arc(radius, pos, start){
+    var end = start + 90;
+    var offset = line_thickness/2;
+    var arc1 = d3.svg.arc()
+        .innerRadius(radius - offset)
+        .outerRadius(radius + offset)
+        .startAngle(rad(start))
+        .endAngle(rad(end))
+    
+    group1.append('path')
+        .attr('d', arc1)
+        .style({"stroke": "none", "fill":fill_color}) 
+        .attr('transform', 'translate(' + [pos.x, pos.y] + ')')
+      
+}
+}
+
+function draw_xhair(pos){
+    var xhair = 15;
+    draw_line({x:pos.x - xhair, y: pos.y},{x:pos.x + xhair, y: pos.y})
+    draw_line({x:pos.x, y: pos.y- xhair},{x:pos.x, y: pos.y+ xhair})
+}
+
+function distance(pos1, pos2){
+    var dx = pos1.x - pos2.x,
+        dy = pos1.y - pos2.y;
+    return Math.sqrt( dx*dx + dy*dy)
+}
+
+function make_path(pos1, pos2){
+    return "M " + [pos1.x, pos1.y, pos2.x, pos2.y]
+}
+
+function draw_line(pos1, pos2){
+    group1.append('path')
+        .attr('d', make_path(pos1, pos2))
+        .style(line_type)
+}
+
+function get_second_internal(angle, m, pos){
+    return get_points(angle, pos, {}, m)
+}
+
+function rad(deg) { 
+    return radian_constant * deg 
+}
+
+// get_points(angle, cp, {}, amp)
+function get_points(angle, cp, pos, amp){
+    pos.x = (Math.cos(rad(angle)) * amp) + cp.x
+    pos.y = -(Math.sin(rad(angle)) * amp) + cp.y
+    return pos
+}
+
+is_ready = true
+
+;(function(){
+  if(!window.step) window.step = null
+  // debuggin snippet for when not in an iframe
+  if(window.self !== window.top) return
+  ;(function check(){ if(!is_ready) return setTimeout(check, 100); setInterval(step, 100) })()
+})()
+
+</script>
