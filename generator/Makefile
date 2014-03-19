@@ -10,7 +10,7 @@ giffify: frames
 	node lib/giffify.js
 
 clean:
-	rm -r data/bin/*
-	rm -r output/*
+	rm -rf data/bin/*
+	rm -rf output/*
 
 .PHONY: build giffify frames clean
