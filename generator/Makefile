@@ -1,12 +1,12 @@
 
 
-build: giffify
+build: samples
 
 frames: clean
 	node lib/parse-attendees.js > data/bin/attendees.json
 	phantomjs lib/index.js
 
-giffify: frames samples
+giffify: frames
 	node lib/giffify.js
 
 clean:
@@ -14,7 +14,7 @@ clean:
 	rm -rf output/*
 	rm -rf samples/*
 
-samples:
+samples: giffify
 	mkdir -p samples
 	find output -name *-small.gif -exec cp {} ./samples/ \;
 

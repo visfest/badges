@@ -9,9 +9,11 @@ var badges = JSON.parse(fs.open('./data/badges.json', 'r').read())
 var attendees = JSON.parse(file.read())
 
 // pick a random badge if an attendee does have a badge
-attendees.map(function(a){
-  var i = Math.floor(Math.random() * badges.length)
-  a.url = badges[i]
+var bid = 0
+attendees.map(function(a, i){
+  if(a.url) return
+  a.url = badges[bid]
+  bid = ++bid % badges.length
 })
 
 function create_badge_url(opts){
@@ -24,7 +26,7 @@ var frame = 0
 // var url = 'http://www.google.com/'
 
 // for debugging
-attendees = attendees.slice(0, 4)
+attendees = attendees.slice(0, 10)
 
 queue = attendees.slice()
 
