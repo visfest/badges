@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="../../d3.js"></script>
+<script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<style>
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  background-color: #333;
+}
+
+svg{
+  background-color: #3498db;
+}
+
+.stroke {
+  fill: none;
+  stroke: #99cbec;
+  stroke-width: 3px;
+}
+
+.fill {
+  fill: #3498db;
+}
+
+.graticule {
+  fill: none;
+  stroke: #777;
+  stroke-width: .5px;
+  stroke-opacity: .5;
+}
+
+.land {
+  fill: #2ecc71;
+}
+
+.boundary {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .5px;
+}
+
+
+</style>
+<script>
+
+// originally from: bl.ocks.org/RandomEtc/5165219
+
+var w = 1050, h = 1500
+
+var width = w, height = h
+
+var projection = d3.geo.wagner7()
+    .scale(170)
+    .translate([width / 2, height / 2])
+    .rotate([0, 0])
+    .precision(.1);
+
+var path = d3.geo.path()
+    .projection(projection);
+
+var graticule = d3.geo.graticule();
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+root = svg.append('g').attr('class', 'root')
+
+
+root.attr('transform', 'scale(1.65) translate(1050, -72) rotate(90)')
+
+root.append("defs").append("path")
+    .datum({type: "Sphere"})
+    .attr("id", "sphere")
+    .attr("d", path);
+
+root.append("use")
+    .attr("class", "stroke")
+    .attr("xlink:href", "#sphere");
+
+root.append("use")
+    .attr("class", "fill")
+    .attr("xlink:href", "#sphere");
+
+root.append("path")
+    .datum(graticule)
+    .attr("class", "graticule")
+    .attr("d", path);
+
+var boundary, graticule, world
+
+function draw(){
+  graticule.datum(topojson.feature(world, world.objects.land))
+      .attr("class", "land")
+      .attr("d", path);
+  boundary.datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+      .attr("class", "boundary")
+      .attr("d", path);
+}
+
+d3.json("./world-50m.json", function(error, _world) {
+  world = _world
+  graticule = root.insert("path", ".graticule")
+  boundary = root.insert("path", ".graticule")
+  is_ready = true
+});
+
+
+var steps = 0
+function step() {
+  if(steps++ > 10) return
+  projection.rotate([180 * steps / (10 -1), 0])
+  draw()
+}
+
+is_ready = false
+
+;(function(){
+  if(!window.step) window.step = null
+  // debuggin snippet for when not in an iframe
+  if(window.self !== window.top) return
+  ;(function check(){ if(!is_ready) return setTimeout(check, 100); setInterval(step, 500) })()
+})()
+
+</script>
