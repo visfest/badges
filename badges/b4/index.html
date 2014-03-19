@@ -38,13 +38,26 @@ d3.json("world-110m.json", function(error, world) {
   window.step = function() {
     var t = Date.now() - t0;
     projection.rotate([0, velocity * t]);
-    context.clearRect(0, 0, width, height);
     context.beginPath();
+    context.fillStyle = '#3498db';
+    context.rect(0, 0, width, height);
+    context.fill();
+    context.closePath();
+    context.beginPath();
+    context.fillStyle = '#e67e22';
     path(land);
     context.fill();
+    context.closePath();
   }
   window.is_ready = true
 });
+
+
+// debugging snippet for when not in an iframe
+;(function(){
+  if(window.self !== window.top) return
+  ;(function check(){ if(!window.is_ready) return setTimeout(check, 100); setInterval(step, 100) })()
+})()
 
 </script>
 

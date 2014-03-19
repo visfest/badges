@@ -19,12 +19,12 @@ circle {
 <script src="../../d3.js" charset="utf-8"></script>
 <script>
 
-var maxRadius = 32, // maximum radius of circle
+var maxRadius = 128, // maximum radius of circle
     padding = 1, // padding between circles; also minimum radius
     margin = {top: -maxRadius, right: -maxRadius, bottom: -maxRadius, left: -maxRadius},
-    width = 960 - margin.left - margin.right,
+    width = 960 - margin.left - margin.right
 
-width = 1050, height = 1500
+width = 1200, height = 1650
 
 var k = 1, // initial number of candidates to consider per circle
     m = 10, // initial number of circles to add per frame
@@ -41,7 +41,9 @@ var hash = window.location.hash
 var frame = Number(hash.split('#')[1]) || 7
 
 var called_once = false
+var so_far = 0
 function step(){
+  if(++so_far > 10) return
   if(!called_once) return called_once = true, null
   for(var i = 0; i < 10; i++) _step()
 }
@@ -103,5 +105,13 @@ function bestCircleGenerator(maxRadius, padding) {
 }
 
 window.is_ready = true
+
+
+
+// debugging snippet for when not in an iframe
+;(function(){
+  if(window.self !== window.top) return
+  ;(function check(){ if(!window.is_ready) return setTimeout(check, 100); setInterval(step, 100) })()
+})()
 
 </script>

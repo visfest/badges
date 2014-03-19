@@ -102,4 +102,10 @@ function step(){
 
 d3.select(self.frameElement).style("height", height + "px");
 
+// debugging snippet for when not in an iframe
+;(function(){
+  if(window.self !== window.top) return
+  ;(function check(){ if(!window.is_ready) return setTimeout(check, 100); setInterval(step, 100) })()
+})()
+
 </script>

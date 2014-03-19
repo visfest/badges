@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="../../d3.js"></script>
+<style>
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+rect {
+  fill: #e67e22;
+  stroke: white;
+  stroke-width: 2;
+}
+svg{
+  background-color: #c0392b;
+}
+</style>
+<script>
+
+// originally from: bl.ocks.org/RandomEtc/5165219
+
+var w = 1050,
+    h = 1500,
+    i = 0,
+    frames = 8
+
+// var w = window.innerWidth, h = window.innerHeight
+
+var svg = d3.select('body').append('svg')
+  .attr('width',w)
+  .attr('height',h);
+
+var data = d3.range(200)
+
+var root = svg.append('g').attr('transform', 'translate(' + [ w / 2, h / 2 ] + ')' )
+var rects = root.selectAll('g').data(data).enter().append('g')
+
+rects.append('rect').attr({
+  width: w, height: h, x: - w / 2, y: - h / 2
+})
+
+var i = 0, t
+function step(){
+  t = i / (frames - 1), i++
+  // if(i > 8) return
+  max_rot = 180 * t
+  rects.attr('transform', function(d, i){
+    var t = i / (data.length - 1)
+    return 'scale(' + (1 - t) + ') rotate(' + t * max_rot + ')'
+  })
+}
+
+is_ready = true
+
+
+;(function(){
+  if(!window.step) window.step = null
+  // debuggin snippet for when not in an iframe
+  if(window.self !== window.top) return
+  ;(function check(){ if(!is_ready) return setTimeout(check, 100); setInterval(step, 10) })()
+})()
+
+</script>
+
+
+</script>

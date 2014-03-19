@@ -10,11 +10,9 @@
 </style>
 <script>
 
-var width = 960,
-    height = 500,
-    id = 0;
+id = 0;
 
-width = window.innerWidth, height = window.innerHeight
+var width = 1050, height = 1500
 
 var voronoi = d3.geom.voronoi()
     .clipExtent([[-1, -1], [width + 1, height + 1]]);
@@ -100,5 +98,11 @@ function path(cell) {
   for (var i = 1, n = cell.length; i < n; ++i) context.lineTo(cell[i][0], cell[i][1]);
   context.closePath();
 }
+
+// debugging snippet for when not in an iframe
+;(function(){
+  if(window.self !== window.top) return
+  ;(function check(){ if(!window.is_ready) return setTimeout(check, 100); setInterval(step, 100) })()
+})()
 
 </script>

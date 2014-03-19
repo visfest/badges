@@ -1,4 +1,5 @@
+.DS_Store
 ./node_modules
 generator/node_modules/*
 generator/gif/*
-.DS_Store
+samples/

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="../../d3.js"></script>
+<style>
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+circle {
+  fill: #e67e22;
+  stroke: none;
+}
+svg{
+  background-color: #c0392b;
+}
+</style>
+<script>
+
+// originally from: bl.ocks.org/RandomEtc/5165219
+
+var w = 1050,
+    h = 1500,
+    i = 0
+    frames = 8
+    svg = d3.select('body').append('svg')
+      .attr('width',w)
+      .attr('height',h);
+
+var data = d3.range(200).map(function(){ return Math.random() > 0.5 })
+
+var dots = svg.selectAll('circle').data(data).enter().append('g')
+dots.append('circle').attr('r', 10)
+dots.attr('transform', function(d){
+  return 'translate(' + [ Math.random() * w, Math.random() * h] + ')'
+}).attr('opacity', function(d){ return d ? 1 : 0 })
+
+var i = 0, t
+function step(){
+  t = i / (frames - 1), i++
+  if(i > 8) return
+  console.log('step', i)
+  dots.attr('opacity', function(d, _i){
+    var ii = i - _i / 10
+    if(ii < 0) ii = 0
+    var t = ii / (frames - 1)
+    if(d) return t * 1
+    else return 1
+  })
+  dots.select('circle').attr('r', function(d, i){
+    if(d) return 100 - t * 50
+    else return 10
+  })
+}
+
+is_ready = true
+
+
+;(function(){
+  // debuggin snippet for when not in an iframe
+  if(window.self !== window.top) return
+  ;(function check(){ if(!is_ready) return setTimeout(check, 100); setInterval(step, 100) })()
+})()
+
+</script>
+
+
+</script>

@@ -15,7 +15,7 @@ attendees.map(function(a){
 })
 
 function create_badge_url(opts){
-  return 'http://localhost:8080/index.html#' + encodeURIComponent(JSON.stringify(opts));
+  return 'http://localhost:8080/index.html#' + encodeURIComponent(JSON.stringify(opts))
 }
 
 var frames = 10
@@ -24,7 +24,7 @@ var frame = 0
 // var url = 'http://www.google.com/'
 
 // for debugging
-attendees = [attendees[0], attendees[1]]
+attendees = attendees.slice(0, 4)
 
 queue = attendees.slice()
 
@@ -37,10 +37,10 @@ queue = attendees.slice()
 })()
 
 function finish_up(){
-  var frame_dirs = attendees.map(function(a){
-    return "output/" + a.firstName + '-' + a.lastName
+  var dirs = attendees.map(function(a){
+    return { dir: "output", name: a.firstName + '-' + a.lastName }
   })
-  fs.write('./data/bin/frame-dirs.json', JSON.stringify(frame_dirs), 'w')
+  fs.write('./data/bin/frame-dirs.json', JSON.stringify(dirs), 'w')
   phantom.exit()
 }
 
