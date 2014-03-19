@@ -151,7 +151,6 @@ root.attr('transform', 'translate(' + [100, 1700] + ') rotate(-90) scale(2)')
             }
 
           });
-
   is_ready = true
 });
 
@@ -213,14 +212,16 @@ var moveToFront = function() {
 
 
 var steps = 0, frames = 10
+
 function step(){
   if(steps++ > 10) return
   var t = steps / (frames - 1)
   d3.selectAll('path')
-    .attr('d', function(d){ return d.startPath })
-    .transition()
     .style("fill", "#f13")
-    .attr('d', function(d){ return d.endPath })
+    // manual interpolation!
+    .attr('d', function(d){
+      return d3.interpolate(d.startPath, d.endPath)(t)
+    })
 }
 
 

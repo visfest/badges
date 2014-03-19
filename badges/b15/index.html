@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="../../d3.js"></script>
+<style>
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+</style>
+<script>
+
+// originally from: bl.ocks.org/RandomEtc/5165219
+
+var w = 1050,
+    h = 1500
+
+var width = w, height = h
+
+tributary = { sw: w, sh: h }
+
+var body = d3.select("body").attr('id', 'display')
+
+
+tributary.duration = 50000;
+
+d3.select("#display").style("background-color", "#7c7c7c").append('svg')
+
+  
+//Layout properties
+var n = 64;
+var m = 40;
+window.trib = window.trib || {}
+window.trib_options = window.trib_options || {}
+trib.spacing = 24;
+trib.opacity = 0.8;
+trib.stroke_width = 2;
+
+//Sin wave function
+//y = amplitude * sin( omega * theta + phase)
+trib.amplitude = 70;
+trib.theta = -7;
+trib.omega = 1.57696;
+trib.phase = 2
+
+
+
+
+
+var sw = tributary.sw;
+var sh = tributary.sh;
+
+function draw(){
+
+  var lines = [ ];
+  for (i in d3.range(n)) {
+
+      var data = d3.range(m) 
+      lines.push({ 
+          index: i,
+          data: data
+      })
+  }
+
+  var xscale = d3.scale.linear()
+      .domain([0, m])
+      .range([-.1*sw, sw*1])
+
+  function line_maker( data ) {
+      var freq = trib.omega * data.index
+      var svgline = d3.svg.line()
+          .x(function(d,i) { return xscale(d + 1); })
+          .y(function(d,i) {
+              var th = d/m * trib.theta
+              var ph = (n-data.index) * trib.phase
+              var y = trib.amplitude * Math.sin(freq * th + ph );
+              return y
+          })
+          .interpolate("basis")
+          //.interpolate("linear")
+      return svgline(data.data);
+  }
+
+  function lineenter(d, i) {
+      d3.select(this).selectAll("path.path")
+          .data([d])
+          .enter()
+      .append("svg:path")
+          .attr("class", "path")
+          .attr("stroke-width", trib.stroke_width)
+          .attr("stroke", "#fff")
+          .attr("fill", "none")
+      update_spacing()
+  }
+
+  function update_spacing()
+  {
+      var th = trib.spacing * n;
+      var hscale = d3.scale.linear()
+          .domain([0, n])
+          .range([0, sh])
+      d3.selectAll("g.line path")
+          .attr("transform", function(d, i) { 
+              //return "translate(" + [0, th - spacing * d.index] + ")"; 
+              return "translate(" + [0, 10+sh/2 + th / 2 - trib.spacing * d.index] + ")"; 
+          })
+  }
+
+  var svg = d3.select('svg')
+  svg.selectAll('*').remove()
+  svg
+    .attr({width: w, height: h})
+    .append("g")
+
+  var line = svg.selectAll("g.line")
+      .data(lines)
+    .enter().append("g")
+      .attr("class", "line")
+      .each(lineenter);
+
+    
+  d3.selectAll("g.line path") 
+      .attr("d", function(d,i) { return line_maker(d) })
+      .attr("stroke", "white")
+      .attr("opacity", trib.opacity);
+
+}
+
+var steps = 0
+function step() {
+  if(steps++ > 10) return
+  trib.phase = steps / 40
+  draw()
+}
+
+is_ready = true
+
+;(function(){
+  if(!window.step) window.step = null
+  // debuggin snippet for when not in an iframe
+  if(window.self !== window.top) return
+  ;(function check(){ if(!is_ready) return setTimeout(check, 100); setInterval(step, 100) })()
+})()
+
+</script>
