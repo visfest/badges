@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="../../d3.js"></script>
+<style>
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+</style>
+<script>
+
+// originally from: bl.ocks.org/RandomEtc/5165219
+
+var w = 1050,
+    h = 1500
+
+tributary = { sw: w, sh: h }
+
+var body = d3.select('body').style("background-color", "rgb(50,70,80)")
+var ctx = body.append('canvas').attr({width: w, height: h}).node().getContext('2d')
+ctx.globalCompositeOperation = 'source-over';
+
+//laser math 
+//http://spot.colorado.edu/~lessley/pdf%20stuff/lasermath2.pdf
+
+var x0 = w / 2;
+var y0 = h / 2;
+
+var a = 180;
+var b = 19;
+//var b = (n-1)/(n+10);
+
+var s  = 4.3
+var hx = 95 * s;
+var hy = 100 * s;
+
+var fbase = 18.77226;
+var omega0 = 2 * Math.PI * fbase;
+
+var om = omega0 * 12345;
+
+var erasing = 0.001;
+var linen = -112;
+var cs = d3.interpolateHsl("#EC3F3F", "#E9D70C");
+var sopacity = 0.728;
+var cf = d3.interpolateHsl("#29dada", "#25b4e4");
+var fopacity = 0.7;
+var radius = 10 ;
+
+var nt = 128;
+var to = 0.2;
+
+function x(t, o) {
+  //return (a - b) * Math.cos(omega0*t) + h * Math.cos(omega0*t*(a/b-1));
+  return (a - b) * Math.cos(o*t) + hx * Math.cos(o*t*(a-b)/b);
+  //return h * Math.cos(t*Math.PI);
+}
+function y(t, o) {
+  //return (a - b) * Math.sin(omega0*t) - h * Math.sin(omega0*t*(a/b-1));
+  return (a - b) * Math.sin(o*t) - hy * Math.sin(o*t*(a-b)/b);
+  //return h * Math.sin(t*Math.PI);
+}
+
+function circle(ctx, p) {
+    //ctx.fillStyle = 'hsla(0,0%,' + 70 +'%,' + 1 + ')';
+    ctx.beginPath();
+    ctx.arc(p[0],p[1],radius,0,2*Math.PI);
+    ctx.fill();
+}
+function line(ctx) {  
+  ctx.beginPath();
+  var i;
+  for(i=0;i<linen;i++) {
+      //ctx.strokeStyle = c(i/linen);
+    ctx.lineTo(x0 + x(i/linen, omega0), y0 + y(i/linen, omega0));
+  }
+  ctx.stroke();
+  
+}
+
+function run(ctx,t) {
+    //tributary.clear(); //helper function to clear the canvas 
+    ctx.fillStyle = "rgba(50,70,80," + erasing +  ")";
+    ctx.fillRect(0,0,tributary.sw,tributary.sh);
+    var tt = (t % 10)/10;
+    
+    var p;
+    
+
+
+    ctx.strokeStyle = cs(tt);
+  line(ctx);
+    
+    p = [x0 + x(tt, om), y0 + y(tt, om)]; 
+    ctx.fillStyle = cf(tt);
+    circle(ctx, p);
+  
+    
+    var i = 0;
+    for(i = 0; i < nt; i++) {
+      //p = [x0 + x(tt+i*tt/2, om), y0 + y(tt+i*tt/2, om)]; 
+      p = [x0 + x(tt+i*to, om), y0 + y(tt+i*to, om)]; 
+      ctx.fillStyle = cf(tt);
+      circle(ctx, p);
+    }
+    
+  
+};
+var t = 0; var steps = 0
+function step(){
+  if(steps++ > 10) return
+  t+= 0.1;
+  run(ctx, t);
+}
+
+
+is_ready = true
+
+;(function(){
+  if(!window.step) window.step = null
+  // debuggin snippet for when not in an iframe
+  if(window.self !== window.top) return
+  ;(function check(){ if(!is_ready) return setTimeout(check, 100); setInterval(step, 100) })()
+})()
+
+</script>
