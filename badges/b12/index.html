@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="../../d3.js"></script>
+<style>
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+</style>
+<script>
+
+// originally from: bl.ocks.org/RandomEtc/5165219
+
+var w = 1050,
+    h = 1500
+
+var width = w, height = h
+
+tributary = { sw: w, sh: h }
+
+
+var fill = d3.scale.category10();
+
+var triangleData =  [{"x":10, "y":0},
+          {"x":20, "y":20},
+          {"x":0, "y":20}];
+
+var triangle = d3.svg.line(triangleData)
+        .x(function (d){return d.x})
+        .y(function (d){return d.y})
+        .interpolate("linear");
+
+
+//COMPLETE ARRAY of OBJECTS
+var maxWidth = w;
+var maxHeight = h;
+var rangedX= d3.range(0,maxWidth,20); //start, stop, step... this is an array
+var rangedY = d3.range(0,maxHeight,20); // this is also an array    
+var nodes = new Array();
+
+for(var i=0; i<rangedY.length; i++){
+  var tempArray = new Object();
+  for(var j=0; j<rangedX.length; j++){
+    tempArray = { x: rangedX[j], 
+            y: rangedY[i],
+            fixed: true,
+            ltod: false,
+            color: "lightskyblue"
+            };
+    nodes.push(tempArray);
+  }
+};
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .style("background-color", "aliceblue");
+
+var currentHover;
+var ltod;
+
+var node = svg.selectAll(".node")
+    .data(nodes)
+  .enter().append("path")
+    .attr("d", triangle(triangleData))
+    .attr("class", "node")
+  .attr("transform", function(d){ return "translate(" + d.x + ","+ d.y +")" })
+    .attr("r", 8)
+    .style("fill", function(d, i) { return d.color; })
+    .on("mouseover", function(d){
+      d3.select(this).style("fill", "pink");
+    })
+    .on("mouseout", function(d){
+    d3.select(this).style("fill","lightskyblue");  
+    });
+
+svg.style("opacity", 1);
+
+var n = nodes.length;
+function rand(){ return Math.random() }
+
+var c = { x: w / 2, y: h / 2}
+svg.selectAll('path').each(function(d, i){
+  var x = d.x - c.x, y = d.y - c.y
+  var r = Math.sqrt(x*x + y*y)
+  if(i < 10) console.log(r)
+  d.trans = { x: x * rand() / 2, y: y * rand() / 2 }
+})
+
+var steps = 0, frames = 10
+function step(){
+  if(steps++ > 10) return
+  var t = steps / (frames - 1)
+  svg.selectAll('path').attr('transform', function(d){
+    var pos = [ d.trans.x, d.trans.y ]
+    pos[0] = d.x + pos[0] * t, pos[1] = d.y + pos[1] * t
+    return 'translate(' + pos + ')'
+  })
+}
+
+is_ready = true
+
+;(function(){
+  if(!window.step) window.step = null
+  // debuggin snippet for when not in an iframe
+  if(window.self !== window.top) return
+  ;(function check(){ if(!is_ready) return setTimeout(check, 100); setInterval(step, 100) })()
+})()
+
+</script>

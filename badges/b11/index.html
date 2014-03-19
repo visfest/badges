@@ -152,8 +152,7 @@ root.attr('transform', 'translate(' + [100, 1700] + ') rotate(-90) scale(2)')
 
           });
 
-
-
+  is_ready = true
 });
 
 
@@ -226,7 +225,7 @@ function step(){
 
 
 
-is_ready = true
+window.is_ready = false
 
 ;(function(){
   if(!window.step) window.step = null
