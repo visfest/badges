@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="../../d3.js"></script>
+<style>
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+    path {
+      stroke: white;
+      stroke-width: 0.5;
+    }
+
+</style>
+<script>
+
+// originally from: bl.ocks.org/RandomEtc/5165219
+
+var w = 1050,
+    h = 1500
+
+tributary = { sw: w, sh: h }
+
+
+var width = w;
+var height = h;
+var dorlingView = false;
+
+
+var projection = d3.geo.albersUsa()
+          .scale(1000);
+
+var svg = d3.select("body").append("svg")
+      .attr("width", width)
+      .attr("height", height)
+
+
+
+//Load JSON data
+d3.json("us-states.json", function(json) {
+
+
+
+  //We're going to extract some coordinates
+  //and calculate some new path values,
+  //to be stored here:  
+  var derivedPathData = [];
+
+
+
+  //Function to calc start/end paths for each polygon
+  var calcCoords = function(polygon) {
+
+    var startCoords = polygon.map(projection);
+    var endCoords = circle(startCoords);
+    var start = "M" + startCoords.join("L") + "Z";
+    var end = "M" + endCoords.join("L") + "Z";
+
+    derivedPathData.push({ startPath: start, endPath: end });
+
+  };
+
+
+
+  //Loop through once for each feature
+  for (var i = 0; i < json.features.length; i++) {
+
+    //Extract the geometry from this feature
+    var geometry = json.features[i].geometry;
+
+    //If this is a normal polygon
+    if (geometry.type == "Polygon") {
+      
+      //Just calc the coordinate for its single polygon
+      calcCoords(geometry.coordinates[0]);
+      
+    } else if (geometry.type == "MultiPolygon") {
+
+      //Otheriwse, calc the coordinates for its multiple polygons
+      for (var j = 0; j < geometry.coordinates.length; j++) {
+        calcCoords(geometry.coordinates[j][0]);
+      }
+
+    }
+
+  }
+
+
+
+  //Use this derived data to make new path elements
+  var root = d3.select("svg").append('g')
+
+root.attr('transform', 'translate(' + [100, 1700] + ') rotate(-90) scale(2)')
+
+        root
+          .selectAll("path")
+          .data(derivedPathData)
+          .enter()
+          .append("path")
+          .attr("transform", "translate(0,0)")
+          .style("fill", "#ccc")
+          .attr("d", function(d) {
+            return d.startPath;
+          })
+          .on("mouseover", function(d) {
+
+            //If this path has already been 'dropped'
+            if (!d3.select(this).classed("dropped")) {
+
+              //Move to front and drop it down
+              d3.select(this)
+                .each(moveToFront)
+                .transition()
+                .duration(500)
+                .style("fill", "#f13")
+                .attr("d", function(d) {
+                  return d.endPath;
+                })
+                .each("end", function() {
+
+                  var bbox = d3.select(this).node().getBBox();
+                  var newY = -bbox.y + (height - bbox.height);
+
+                  d3.select(this)
+                    .classed("dropped", true)
+                    .transition()
+                    .duration(750)
+                    .ease("bounce")
+                    .attr("transform", "translate(0," + newY + ")");
+
+                });
+
+            } else {
+              
+              //Otherwise, restore its original position
+              d3.select(this)
+                .classed("dropped", false)
+                .transition()
+                .duration(500)
+                .style("fill", "#ccc")
+                .attr("transform", "translate(0,0)")
+                .attr("d", function(d) {
+                  return d.startPath;
+                });
+
+            }
+
+          });
+
+
+
+});
+
+
+
+//Function to take coordinates and calculate a circular
+//path using the same number of points. (Thanks, @mbostock!)
+//In this example, we use the circle as our 'endPath'.
+var circle = function(coordinates) {
+
+  var circle = [],
+      length = 0,
+      lengths = [length],
+      polygon = d3.geom.polygon(coordinates),
+      p0 = coordinates[0],
+      p1,
+      x,
+      y,
+      i = 0,
+      n = coordinates.length;
+
+  // Compute the distances of each coordinate.
+  while (++i < n) {
+    p1 = coordinates[i];
+    //console.log(p1);
+    x = p1[0] - p0[0];
+    y = p1[1] - p0[1];
+    lengths.push(length += Math.sqrt(x * x + y * y));
+    p0 = p1;
+  }
+
+  var area = polygon.area(),
+      radius = Math.sqrt(Math.abs(area) / Math.PI),
+      centroid = polygon.centroid(-1 / (6 * area)),
+      angleOffset = -Math.PI / 2, // TODO compute automatically
+      angle,
+      i = -1,
+      k = 2 * Math.PI / lengths[lengths.length - 1];
+
+  // Compute points along the circle’s circumference at equivalent distances.
+  while (++i < n) {
+    angle = angleOffset + lengths[i] * k;
+    circle.push([
+      centroid[0] + radius * Math.cos(angle),
+      centroid[1] + radius * Math.sin(angle)
+    ]);
+  }
+
+  return circle;
+};
+
+
+
+//Move SVG elements to the end of their container,
+//so they appear "on top".
+var moveToFront = function() { 
+  this.parentNode.appendChild(this); 
+}
+
+
+var steps = 0, frames = 10
+function step(){
+  if(steps++ > 10) return
+  var t = steps / (frames - 1)
+  d3.selectAll('path')
+    .attr('d', function(d){ return d.startPath })
+    .transition()
+    .style("fill", "#f13")
+    .attr('d', function(d){ return d.endPath })
+}
+
+
+
+is_ready = true
+
+;(function(){
+  if(!window.step) window.step = null
+  // debuggin snippet for when not in an iframe
+  if(window.self !== window.top) return
+  ;(function check(){ if(!is_ready) return setTimeout(check, 100); setInterval(step, 100) })()
+})()
+
+</script>
