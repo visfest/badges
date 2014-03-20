@@ -26,7 +26,7 @@ csv().from.stream(fs.createReadStream(__dirname + '/../data/tito-visfest-d3uncon
 function add_special_url(attendee){
   // for people who made their own badge
   var gh = attendee.githubName, url
-  if(gh === 'enjalot') url = 'badges/b8/index.html'
+  if(gh === 'enjalot') url = 'badges/b28/index.html'
   if(gh === 'gelicia') url = 'badges/b9/index.html'
   if(gh === 'vicapow') url = 'badges/b6/index.html'
   if(gh === 'ptvans')  url = 'badges/b10/index.html'
