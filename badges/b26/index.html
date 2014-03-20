@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="../../d3.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<style>
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  background-color: black;
+}
+
+body{
+  width: 1050px;
+  height: 1500px;
+  background-color: #333;
+}
+
+</style>
+<script>
+
+var w = 1050, h = 1500
+
+var width = w, height = h
+
+var    velocity = .003,
+    time = Date.now();
+
+var position = d3.scale.ordinal()
+    .domain([0, 1])
+    .rangePoints([0, width * .87], .8);
+
+var projections = [
+  d3.geo.equirectangular()
+      .scale(85)
+      .translate([position(0), height / 2])
+      .precision(.3),
+  d3.geo.mercator()
+      .scale(240)
+      .translate([ w/ 2, height / 2 + 0])
+      .precision(.3)
+];
+
+var sphere = {type: "Sphere"},
+    graticule = d3.geo.graticule()();
+
+var canvas = d3.select("body").append("canvas")
+    .attr("width", width)
+    .attr("height", height);
+
+var context = canvas.node().getContext("2d");
+
+context.strokeStyle = "#aaa";
+
+var path = d3.geo.path()
+    .context(context);
+
+d3.json("../b23/world-110m.json", function(error, world) {
+  var land = topojson.feature(world, world.objects.land);
+  var projection = projections[1]
+  window.is_ready = true
+  window.draw = function() {
+    var dt = steps / 9 * 30000
+    projection.rotate([velocity * dt, 0, 90]);
+    render();
+  }
+
+  function render() {
+    context.clearRect(0, 0, width, height);
+    
+    var translate = projection.translate();
+    context.save();
+    context.translate(translate[0], translate[1]);
+    context.rotate(Math.PI / 2);
+    context.translate(-translate[0], -translate[1]);
+
+    path.projection(projection);
+
+    context.beginPath();
+    path(sphere);
+    context.stroke();
+
+    context.beginPath();
+    path(graticule);
+    context.stroke();
+
+    context.beginPath();
+    path(land);
+    context.fill();
+
+    context.restore();
+  }
+});
+
+window.is_ready = false
+
+var steps = 0
+function step() {
+  if(steps++ > 10) return
+  draw()
+}
+
+;(function(){
+  if(!window.step) window.step = null
+  // debuggin snippet for when not in an iframe
+  if(window.self !== window.top) return
+  ;(function check(){ if(!window.is_ready) return setTimeout(check, 100); setInterval(step, 100) })()
+})()
+
+</script>
