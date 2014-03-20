@@ -10,11 +10,15 @@ html, body {
   margin: 0;
   padding: 0;
 }
+svg{
+  background-color: #3498db;
+}
 
-    path {
-      stroke: white;
-      stroke-width: 0.5;
-    }
+path {
+  stroke: white;
+  fill: #2ecc71;
+  stroke-width: 0.5;
+}
 
 </style>
 <script>
@@ -103,7 +107,6 @@ root.attr('transform', 'translate(' + [100, 1700] + ') rotate(-90) scale(2)')
           .enter()
           .append("path")
           .attr("transform", "translate(0,0)")
-          .style("fill", "#ccc")
           .attr("d", function(d) {
             return d.startPath;
           })
@@ -142,7 +145,6 @@ root.attr('transform', 'translate(' + [100, 1700] + ') rotate(-90) scale(2)')
                 .classed("dropped", false)
                 .transition()
                 .duration(500)
-                .style("fill", "#ccc")
                 .attr("transform", "translate(0,0)")
                 .attr("d", function(d) {
                   return d.startPath;
@@ -217,7 +219,6 @@ function step(){
   if(steps++ > 10) return
   var t = steps / (frames - 1)
   d3.selectAll('path')
-    .style("fill", "#f13")
     // manual interpolation!
     .attr('d', function(d){
       return d3.interpolate(d.startPath, d.endPath)(t)

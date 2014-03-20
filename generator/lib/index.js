@@ -26,7 +26,7 @@ var frame = 0
 // var url = 'http://www.google.com/'
 
 // for debugging
-attendees = attendees.slice(0, 20)
+attendees = attendees.slice(0, 30)
 
 queue = attendees.slice()
 
