@@ -4,7 +4,7 @@ body, html{
   height: 100%;
   font-family: 'open_sansextrabold';
   color: #fff;
-  text-shadow: 0px -4px 0px rgba(0,0,0,0.8);
+  text-shadow: 0px -4px 0px 4px rgba(0,0,0,0.8);
 }
 
 svg{
@@ -73,7 +73,7 @@ iframe{
 
 .github-logo img {
   position: relative;
-  width: 80px;
+  width: 100px;
   margin: 0 25px -15px 0;
 }
 
@@ -93,5 +93,5 @@ iframe{
   left: 400px;
   font-size: 2em;
   font-weight: 800;
-  font-family: 'open_sanslight';
+  font-family: 'open_sansextrabold';
 }
