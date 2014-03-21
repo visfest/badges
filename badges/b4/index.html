@@ -47,9 +47,10 @@ d3.json("world-110m.json", function(error, world) {
     context.fill();
     context.closePath();
     context.beginPath();
-    context.fillStyle = '#e67e22';
+    context.fillStyle = '#2ecc71';
     path(land);
     context.fill();
+    context.stroke();
     context.closePath();
   }
   window.is_ready = true
