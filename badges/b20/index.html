@@ -11,8 +11,7 @@ html, body {
   overflow: hidden;
   margin: 0;
   padding: 0;
-  background-color: #333;
-  background-color: #3498db;
+  background-color: black;
 }
 
 canvas{
@@ -53,6 +52,7 @@ canvas{
   width: 1050px;
   height: 1500px;
   position: absolute;
+  background-color: #333;
 }
 
 
@@ -97,9 +97,10 @@ d3.json("./world-110m.json", function(error, world) {
       var rotate = [0, 0, 0], context = this.getContext("2d");
       rotate[i] = angle, projection.rotate(rotate);
       context.clearRect(0, 0, diameter, diameter);
+      context.fillStyle = '#3498db'
+      context.beginPath(), path.context(context)(globe), context.fill();
       context.fillStyle = '#2ecc71'
       context.beginPath(), path.context(context)(land), context.fill();
-      context.beginPath(), path(globe), context.stroke();
     });
   }
 });

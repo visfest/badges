@@ -15,7 +15,7 @@
 // width = window.innerWidth, height = window.innerHeight
 var width = 1050, height = 1500
 
-var velocity = .01,
+var velocity = 180,
     t0 = Date.now();
 
 var projection = d3.geo.equirectangular()
@@ -35,9 +35,12 @@ var path = d3.geo.path()
 d3.json("world-110m.json", function(error, world) {
   var land = topojson.feature(world, world.objects.land);
 
+
+  var steps = 0
   window.step = function() {
-    var t = Date.now() - t0;
-    projection.rotate([0, velocity * t]);
+    if(steps++ > 10) return
+    t = steps / 9
+    projection.rotate([0, velocity * t - 90]);
     context.beginPath();
     context.fillStyle = '#3498db';
     context.rect(0, 0, width, height);
