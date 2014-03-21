@@ -1,12 +1,20 @@
 
-var fs = require('fs')
-var file = fs.open('./data/bin/attendees.json', 'r')
+var args = require('system').args;
+var badge
+if(args[1]) badge = args[1]
 
-// array of badge website urls
-var badges = JSON.parse(fs.open('./data/badges.json', 'r').read())
+var fs = require('fs'), badges, file, attendees
 
-// attendees
-var attendees = JSON.parse(file.read())
+if(!badge){
+  file = fs.open('./data/bin/attendees.json', 'r')
+  attendees = JSON.parse(file.read())
+  badges = JSON.parse(fs.open('./data/badges.json', 'r').read())
+}else{
+  attendees = [
+    { githubName: '', url: 'badges/' + badge + '/index.html', firstName: '', lastName: '' }
+  ]
+  badges = []
+}
 
 // pick a random badge if an attendee does have a badge
 var bid = 0
@@ -61,7 +69,8 @@ function take_badge_pic(opts, done){
       console.log('ready!')
       for(frame = 0; frame < frames; frame++){
         page.evaluate(function(){ if(window.step) window.step() })
-        page.render("output/" + opts.firstName + '-' + opts.lastName + "/frame-"+ frame +".jpg", { format: "jpg" })
+        if(!badge) page.render("output/" + opts.firstName + '-' + opts.lastName + "/frame-"+ frame +".jpg", { format: "jpg" })
+        else page.render('output/badges/' + badge + '/frame-' + frame + '.jpg', {format: 'jpg' })
       }
       page.close()
       if(done) done()

@@ -18,4 +18,9 @@ samples: giffify
 	mkdir -p samples
 	find output -name *-small.gif -exec cp {} ./samples/ \;
 
-.PHONY: build giffify frames clean samples
+
+blanks:
+	for file in `ls ../badges`; do phantomjs lib/index.js $$file; done
+
+
+.PHONY: build giffify frames clean samples blanks

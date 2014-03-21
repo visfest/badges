@@ -154,8 +154,12 @@ try{
 opts.url = opts.url || 'badges/b1/index.html'
 
 d3.select('.github-name').text(opts.githubName)
-d3.select('.first-name').text(opts.firstName)
-d3.select('.last-name').text(opts.lastName)
+if(opts.firstName)
+  d3.select('.first-name').text(opts.firstName)
+else d3.select('.first-name').style('opacity', 0).text('..')
+
+if(opts.lastName) d3.select('.last-name').text(opts.lastName)
+else d3.select('.last-name').style('opacity', 0).text('..')
 
 iframe.attr('src', opts.url)
   .on('load', function(){
