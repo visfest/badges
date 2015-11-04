@@ -25,7 +25,7 @@ attendees.map(function(a, i){
 });
 
 function create_badge_url(opts){
-  return 'http://127.0.0.1:8080/bin/gists/d3unconf-badges/badges/index.html#' + encodeURIComponent(JSON.stringify(opts));
+  return 'http://localhost:8888/bin/gists/badges-github/badges/index.html#' + encodeURIComponent(JSON.stringify(opts));
 }
 
 var frames = 10;
@@ -57,7 +57,7 @@ function take_badge_pic(opts, done){
 
   // var url = create_badge_url(opts);
   // manually set the badge URL
-  var url = 'http://localhost:8888/bin/gists/d3unconf-badges/index.html#badges/satellite/index.html';
+  var url = 'http://localhost:8888/bin/gists/badges-github/index.html#badges/satellite/index.html';
 
   var page = require('webpage').create();
   var w = 1050, h = 1500

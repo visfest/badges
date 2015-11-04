@@ -182,11 +182,11 @@ window.is_ready = false
 iframe.style({width: w + 'px', height: h + 'px' })
 
 
-// var opts = decodeURIComponent(window.location.hash.split('#')[1] || '')
-// var is_test = false
-// try{
-//   opts = JSON.parse(opts)
-// }catch(e){
+var opts = decodeURIComponent(window.location.hash.split('#')[1] || '')
+var is_test = false
+try{
+  opts = JSON.parse(opts)
+}catch(e){
   opts = {
       url: opts
     , firstName: 'Kai'
@@ -206,10 +206,10 @@ else d3.select('.first-name').style('opacity', 0).text('..')
 if(opts.lastName) d3.select('.last-name').text(opts.lastName)
 else d3.select('.last-name').style('opacity', 0).text('..')
 
-// iframe.attr('src', opts.url)
-//   .on('load', function(){
-//     take_badge_pic();
-//   });
+iframe.attr('src', opts.url)
+  .on('load', function(){
+    take_badge_pic();
+  });
 
     </script>
   </body>
