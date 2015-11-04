@@ -78,7 +78,7 @@ function take_badge_pic(opts, done){
             
             // Render an image with the frame name
             page.evaluate(function(){ if(window.step) window.step(); });
-            page.render("output/test-"+ (frame++) +".jpeg", {format: 'jpeg', quality: '100'});
+            page.render("output/frame-"+ (frame++) +".png", {format: 'png', quality: '100'});
             
             // Exit after 10 images
             if(frame > 9) {
