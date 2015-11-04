@@ -1,6 +1,7 @@
 
 
-# A D3 unconf badge creator based on work by @vicapow : https://github.com/visfest/badges
+# A D3 unconf badge creator 
+based on work by @vicapow : https://github.com/visfest/badges
 
 Create a background visualization for our conference badges! How's this made possible by the awesome magic of lenticular lenses and the fine folks at [gifpop](http://gifpop.io/)
 
