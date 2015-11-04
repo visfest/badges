@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+<style>
+
+body {
+  background-color: lightgreen;
+}
+
+path {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 3px;
+
+}
+
+circle {
+  fill: steelblue;
+  stroke: #fff;
+  stroke-width: 3px;
+}
+
+#hint {
+  font: 14px 'Lato', sans-serif;
+  shape-rendering: crispEdges;
+  fill: #525252;
+  position: absolute;
+  top: 100px;
+  left: 100px;
+}
+
+</style>
+</head>
+<body>
+<div id="hint"><</div>
+
+<script>
+
+var points = [
+  [140, 900],
+  [140, 900],
+  [340, 940],
+  [480, 900],
+  [300, 840],
+  [400, 700],
+  [540, 780],
+  [640, 990],
+  [660, 640],
+  [440, 720],
+  [540, 900],
+  [640, 940],
+  [740, 840],
+  [640, 740],
+  [400, 800],
+  [290, 860],
+  [220, 800],
+  [150, 880]
+];
+
+
+var chart = d3.select("body").append("svg")
+    .attr("width", 1050)
+    .attr("height", 1500);
+
+var path = chart.append("path")
+    .data([points])
+    .attr("d", d3.svg.line()
+    .tension(.6) // Catmull–Rom
+    .interpolate("cardinal-open"))
+    .style("stroke", "darkblue")
+    .style("stroke-dasharray", "4,4");
+
+
+var circle = chart.append("circle")
+    .attr("r", 13)
+    .attr("transform", "translate(140,900)");
+
+circle.each(function(d) {transition(d);});
+
+
+function transition() {
+  circle.transition()
+      .duration(10000)
+      .attrTween("transform", translateAlong(path.node()));
+      // .each("end", transition);
+  
+  var pin = chart.append("path")
+      .style("opacity",0)
+      .attr("d", "M 50,0 C 31.294,0 16.129,15.165 16.129,33.87 c 0,0.401 0.012,0.809 0.03,1.221 0.127,3.558 0.798,6.975 1.939,10.172 C 25.324,69.015 50,100 50,100 50,100 74.673,69.018 81.9,45.266 83.043,42.069 83.713,38.649 83.839,35.091 83.859,34.679 83.87,34.272 83.87,33.87 83.871,15.165 68.706,0 50,0 z m 0,50.459 c -9.161,0 -16.589,-7.428 -16.589,-16.589 0,-9.16 7.428,-16.588 16.589,-16.588 9.162,0 16.589,7.428 16.589,16.588 0,9.161 -7.427,16.589 -16.589,16.589 z")
+      .style("fill", "orange")
+      .attr("transform", "translate(170,700)");
+
+    pin.transition().delay(10000).duration(1000).style("opacity",1);
+      
+}
+
+// Returns an attrTween for translating along the specified path element.
+function translateAlong(path) {
+  var l = path.getTotalLength();
+  return function(d, i, a) {
+    return function(t) {
+      var p = path.getPointAtLength(t * l);
+      return "translate(" + p.x + "," + p.y + ")";
+    };
+  };
+}
+
+</script>
+</html>

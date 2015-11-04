@@ -5,7 +5,7 @@ var csv = require('csv')
 var fs = require('fs')
 
 var rows = []
-csv().from.stream(fs.createReadStream(__dirname + '/../data/tito-visfest-d3unconf-tickets-all-for-info-visfest-com_.csv'), {columns: true, encoding: 'utf16le'})
+csv().from.stream(fs.createReadStream(__dirname + '/../data/test-d3unconf-tickets.csv'), {columns: true, encoding: 'utf16le'})
   .on('record', function(row, i){
     // we only need a these few fields
     var gh = row['What is your GitHub handle?']
@@ -26,7 +26,7 @@ csv().from.stream(fs.createReadStream(__dirname + '/../data/tito-visfest-d3uncon
 function add_special_url(attendee){
   // for people who made their own badge
   var gh = attendee.githubName, url
-  if(gh === 'enjalot') url = 'badges/b28/index.html'
+  if(gh === 'saraquigley') url = 'badges/points/index.html'
   if(gh === 'gelicia') url = 'badges/b9/index.html'
   if(gh === 'vicapow') url = 'badges/b6/index.html'
   if(gh === 'ptvans')  url = 'badges/b10/index.html'

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <style>
+    .domain {
+      fill: #f6cfaa;
+      stroke: #000;
+    }
+    .abstraction {
+      fill: #eee2b9;
+      stroke: #000;
+    }
+    .idiom {
+      fill: #bfdcc7;
+      stroke: #000;
+    }
+    .algorithm {
+      fill: #d4b4ca;
+      stroke: #000;
+    }
+    .label {
+      font: 400 48pt 'Helvetica Neue', sans-serif;
+     /* fill: #000;*/
+    }
+    body {
+      background-color: #3690c0;
+    }
+</style>
+  </head>
+  <body>
+    <div id="container">
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script>
+    var data = ["domain","abstraction","idiom","algorithm"];
+    var m = 30,
+      w = 550,
+      h = 550;
+
+
+    var svg = d3.select("#container")
+        .append("svg")
+        .attr("width",1050)
+        .attr("height",1500);
+
+    var rects = svg.selectAll("rect")
+      .data(data)
+        .enter()
+      .append("rect")
+        .attr("class", function(d) {return d;})
+        .attr("x",function(d,i) {return m + (i*m);})
+        .attr("y", function(d,i) {return m + (i*h/6.25);})
+        .attr("width", function(d,i) {return w - (2*i*m) - m;})
+        .attr("height", function(d,i) {return h - (2*i*m) - (i*h/6.25);})
+         .attr("transform","translate(250,580)");
+
+    var labels = rects.select("text")
+    .data(data)
+        .enter()
+        .append("text")
+        .attr("x", function(d,i) {return m + (i*m);})
+        .attr("y", function(d,i) {return m + (i*h/6.25);})
+        .attr("transform", function(d,i) {return "translate(" + 270 + "," + 660 + ")"; })
+        .text(function(d) {return d;})
+        .attr("class", "label");
+
+    // setInterval(function () {
+    //         d3.selectAll(".label").transition().duration(1000).style("stroke","#225ea8")
+    //           .style("stroke-width", "1px").transition().duration(1000).style("stroke-width","3px").style("stroke-opacity", 0.85).transition();
+    //           // duration(500).style("stroke", "black");
+    //     }, 2500);
+
+    </script>
+  </body>
+</html>

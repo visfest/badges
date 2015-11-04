@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <style>
+    .domain {
+      fill: #f6cfaa;
+      stroke: #000;
+    }
+    .abstraction {
+      fill: #eee2b9;
+      stroke: #000;
+    }
+    .idiom {
+      fill: #bfdcc7;
+      stroke: #000;
+    }
+    .algorithm {
+      fill: #d4b4ca;
+      stroke: #000;
+    }
+    .label {
+      font: 400 118pt 'Helvetica Neue', sans-serif;
+      fill: #000;
+    }
+</style>
+  </head>
+  <body>
+    <div id="container">
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script>
+    var data = ["domain","abstraction","idiom","algorithm"];
+    var m = 50,
+      w = 1050,
+      h = 1500;
+
+
+    var svg = d3.select("#container")
+        .append("svg")
+        .attr("width",1050)
+        .attr("height",1500);
+
+    var rects = svg.selectAll("rect")
+      .data(data)
+        .enter()
+      .append("rect")
+        .attr("class", function(d) {return d;})
+        .attr("x",function(d,i) {return m + (i*m);})
+        .attr("y", function(d,i) {return m + (i*h/5.25);})
+        .attr("width", function(d,i) {return w - (2*i*m) - m;})
+        .attr("height", function(d,i) {return h - (2*i*m) - (i*h/5.25);});
+
+    var labels = rects.select("text")
+    .data(data)
+        .enter()
+        .append("text")
+        .attr("x", function(d,i) {return m + (i*m);})
+        .attr("y", function(d,i) {return m + (i*h/5.25);})
+        .attr("transform", function(d,i) {return "translate(" + 20 + "," + 200 + ")"; })
+        .text(function(d) {return d;})
+        .attr("class", "label");
+
+
+
+    setInterval(function () {
+            labels.transition().duration(500).style("stroke","black")
+              .style("stroke-width", "1px").transition().duration(500).style("stroke","#525252").style("stroke-width","20px").transition();
+              // duration(500).style("stroke", "black");
+        }, 750);
+
+
+    </script>
+  </body>
+</html>

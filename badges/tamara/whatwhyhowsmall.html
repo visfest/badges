@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <style>
+    .What {
+      fill: #c4654c;
+      stroke: #fff;
+    }
+    .Why {
+      fill: #e5b159;
+      stroke: #fff;
+    }
+    .How {
+      fill: #559d89;
+      stroke: #fff;
+    }
+    .label {
+      font: 200 72pt 'Helvetica Neue', sans-serif;
+      fill: #fff;
+    }
+     body {
+      background-color: #3690c0;
+    }
+</style>
+  </head>
+  <body>
+    <div id="container">
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script>
+    var data = ["What","Why","How"];
+    var m = 30,
+      w = 550,
+      h = 700;
+
+
+    var svg = d3.select("#container")
+        .append("svg")
+        .attr("width",1050)
+        .attr("height",1500);
+
+    svg.append("path")
+      .attr("d", "M130,546 C0,441 0,236 130,126")
+      .attr("fill", "none")
+      .attr("stroke","#ccc")
+      .attr("stroke-width", 15)
+      .attr("transform","translate(240,540)");
+
+    svg.append("path")
+      .attr("d", "M450,546 C580,506 580,376 450,336")
+      .attr("fill", "none")
+      .attr("stroke","#ccc")
+      .attr("stroke-width", 15)
+      .attr("transform","translate(240,540)");
+
+    svg.append("path")
+      .attr("d", "M450,336 C580,296 580,156 450,126")
+      .attr("fill", "none")
+      .attr("stroke","#ccc")
+      .attr("stroke-width", 15)
+      .attr("transform","translate(240,540)");
+
+    var rects = svg.selectAll("rect")
+      .data(data)
+        .enter()
+      .append("rect")
+        .attr("class", function(d) {return d;})
+        .attr("x",function(d,i) {return m*4 ;})
+        .attr("y", function(d,i) {return m*2 + h*i*0.3;})
+        .attr("width", function(d,i) {return w - (7*m);})
+        .attr("height", function(d,i) {return (h/5.25);})
+        .attr("rx",h/5.25*0.35)
+        .attr("ry",h/5.25*0.35)
+        .attr("transform","translate(240,540)");       
+
+    var labels = rects.select("text")
+    .data(data)
+        .enter()
+        .append("text")
+        .attr("x", function(d,i) {return m*4 + ((w - (7*m))*0.5);})
+        .attr("y", function(d,i) {return m*2 + (h*i*0.3);})
+        .attr("transform", function(d,i) {return "translate(" + 250 + "," + 640 + ")"; })
+        .text(function(d) {return d + '?';})
+        .attr("class", "label")
+        .style("text-anchor","middle");
+
+    // setInterval(function () {
+    //     labels.transition().duration(1000).ease("back")
+    //       .style("font-size", "72pt");
+    // }, 1500);
+
+    </script>
+  </body>
+</html>

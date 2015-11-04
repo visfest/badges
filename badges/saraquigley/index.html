@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+body {
+  background: #000;
+}
+
+path {
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+.inner {
+  fill: #7fbc41;
+}
+
+.outer {
+  fill: #4d9221;
+}
+
+.middle {
+    fill: #276419;
+}
+</style>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script>
+
+var width = 1050,
+    height = 1500;
+
+var points = [];
+
+var bounds = d3.geom.polygon([
+  [-width / 2, -height / 2],
+  [-width / 2, +height / 2],
+  [+width / 2, +height / 2],
+  [+width / 2, -height / 2]
+]);
+
+circle(0, 100, 260, 16, -.01);
+circle(0, 100, 180, 12, 0.005);
+circle(0, 100, 0, 1, .02);
+
+var line = d3.svg.line()
+    .interpolate("cardinal-closed");
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", "translate(" + (width / 2) + "," + (height / 2) + ")");
+
+var path = svg.selectAll("path")
+    .data(points)
+  .enter().append("path")
+  .attr("class",function(d, i) { return i < 16 ? "outer" : (i === 28 ? "inner" : "middle");});
+
+d3.timer(function() {
+  var voronoi = d3.geom.voronoi(points).map(function(cell) { return bounds.clip(cell); });
+  path.attr("d", function(point, i) { return line(resample(voronoi[i])); });
+});
+
+function circle(cx, cy, r, n, δθ) {
+  d3.range(1e-6, 2 * Math.PI, 2 * Math.PI / n).map(function(θ) {
+    var point = [cx + Math.cos(θ) * r, cy + Math.sin(θ) * r];
+    d3.timer(function() {
+      θ += δθ;
+
+      point[0] = cx + Math.sin(θ) * r;
+      point[1] = cy + Math.cos(θ) * r;
+    });
+    points.push(point);
+    return point;
+  });
+}
+
+function resample(points) {
+  var i = -1,
+      n = points.length,
+      p0 = points[n - 1], x0 = p0[0], y0 = p0[1], p1, x1, y1,
+      points2 = [];
+  while (++i < n) {
+    p1 = points[i], x1 = p1[0], y1 = p1[1];
+    points2.push(
+      [(x0 * 2 + x1) / 3, (y0 * 2 + y1) / 3],
+      [(x0 + x1 * 2) / 3, (y0 + y1 * 2) / 3],
+      p1
+    );
+    p0 = p1, x0 = x1, y0 = y1;
+  }
+  return points2;
+}
+
+</script>

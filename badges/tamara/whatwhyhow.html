@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <style>
+    .What {
+      fill: #c4654c;
+      stroke: #fff;
+    }
+    .Why {
+      fill: #e5b159;
+      stroke: #fff;
+    }
+    .How {
+      fill: #559d89;
+      stroke: #fff;
+    }
+    .label {
+      font: 200 124pt 'Helvetica Neue', sans-serif;
+      fill: #fff;
+    }
+</style>
+  </head>
+  <body>
+    <div id="container">
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script>
+    var data = ["What","Why","How"];
+    var m = 50,
+      w = 1050,
+      h = 1500;
+
+
+    var svg = d3.select("#container")
+        .append("svg")
+        .attr("width",w)
+        .attr("height",h);
+
+    svg.append("path")
+      .attr("d", "M210,1143 C0,1043 0,343 210,243")
+      .attr("fill", "none")
+      .attr("stroke","#ccc")
+      .attr("stroke-width", 25);
+
+    svg.append("path")
+      .attr("d", "M890,1143 C1080,1031 1080,819 890,693")
+      .attr("fill", "none")
+      .attr("stroke","#ccc")
+      .attr("stroke-width", 25);
+
+    svg.append("path")
+      .attr("d", "M890,243 C1080,368 1080,567 890,693")
+      .attr("fill", "none")
+      .attr("stroke","#ccc")
+      .attr("stroke-width", 25);
+
+    var rects = svg.selectAll("rect")
+      .data(data)
+        .enter()
+      .append("rect")
+        .attr("class", function(d) {return d;})
+        .attr("x",function(d,i) {return m*4 ;})
+        .attr("y", function(d,i) {return m*2 + h*i*0.3;})
+        .attr("width", function(d,i) {return w - (7*m);})
+        .attr("height", function(d,i) {return (h/5.25);})
+        .attr("rx",h/5.25*0.35)
+        .attr("ry",h/5.25*0.35);        
+
+    var labels = rects.select("text")
+    .data(data)
+        .enter()
+        .append("text")
+        .attr("x", function(d,i) {return m*4 + ((w - (7*m))*0.5);})
+        .attr("y", function(d,i) {return m*2 + (h*i*0.3);})
+        .attr("transform", function(d,i) {return "translate(" + 20 + "," + 200 + ")"; })
+        .text(function(d) {return d + '?';})
+        .attr("class", "label")
+        .style("text-anchor","middle");
+
+    setInterval(function () {
+        labels.transition().duration(1000).ease("back")
+          .style("font-size", "124pt").style("font-size", "132pt").style("font-size", "124pt");
+    }, 1500);
+
+    </script>
+  </body>
+</html>

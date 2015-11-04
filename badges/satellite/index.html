@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+body{
+    margin: 0;
+     width: 100%;
+    height: 100%;
+    background-color: lightblue 
+  }
+canvas {
+  position: absolute;
+}
+#overlay {
+  position: absolute;
+  font: bold 12px sans-serif;
+  top: 580px;
+  left: 20px;
+  color: red;
+}
+</style>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-geo-projection/0.2.9/d3.geo.projection.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
+<script src="satellite.js"></script>
+<script>
+
+var width = 1050,
+    height = 1500;
+
+var radius = height / 2 - 5,
+    scale = radius,
+    velocity = .02;
+
+var projection = d3.geo.stereographic()
+    .scale(260)
+    .translate([width / 2, height / 2])
+    .rotate([20,0,60])
+    .precision(.1);
+
+var graticule = d3.geo.graticule()
+  .step([5,5]);
+
+var canvas = d3.select("body").append("canvas")
+    .attr("width", width)
+    .attr("height", height);
+
+var canvas2 = d3.select("body").append("canvas")
+    .attr("width", width)
+    .attr("height", height);
+
+var canvas3 = d3.select("body").append("canvas")
+    .attr("width", width)
+    .attr("height", height);
+
+var overlay = d3.select("body").append("div")
+    .attr("id", "overlay");
+
+var color = d3.scale.ordinal()
+  .range(["#e41a1c","#377eb8","#4daf4a","#984ea3","#ff7f00","#ffff33","#a65628","#f781bf","#999999"]);
+
+var context = canvas.node().getContext("2d");
+var context2 = canvas2.node().getContext("2d");
+var context3 = canvas3.node().getContext("2d");
+
+var path = d3.geo.path()
+    .projection(projection)
+    .context(context);
+
+var timeFormat = d3.time.format("%H:%M %Y-%m-%d");
+
+d3.json("world-110m.json", function(error, world) {
+  if (error) throw error;
+
+  var land = topojson.feature(world, world.objects.land);
+
+  context.fillStyle = "#ddd";
+  context.beginPath();
+  path(land);
+  context.fill();
+
+  context.strokeStyle = "#ccc";
+  context.beginPath();
+  path(graticule());
+  context.lineWidth = 1;
+  context.stroke();
+
+  context.fillStyle = "#444";
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+  context.font = "12px sans-serif";
+
+  /*
+  var equator = projection([0,0]);
+  context.save();
+  context.translate(equator[0], equator[1]);
+  context.rotate(-Math.PI/2);
+  context.fillText("Equator", 0,0);
+  context.restore();
+  */
+
+  var latitude = projection([-58,0]);
+  context.save();
+  context.translate(latitude[0], latitude[1]);
+  context.rotate(Math.PI/6);
+  context.fillText("Latitude", 0, 0);
+  context.restore();
+
+  context.textBaseline = "middle";
+  context.textAlign = "center";
+
+  d3.range(-80,90,10).forEach(function(lat) {
+    var xy = projection([-50,lat]);
+    context.fillText(lat + "°", xy[0]+2, xy[1]);
+  });
+
+  d3.range(-80,90,10).forEach(function(lat) {
+    var xy = projection([130,lat]);
+    context.fillText(lat + "°", xy[0]+2, xy[1]);
+  });
+
+  context.font = "bold 12px sans-serif";
+
+  var northpole = projection([0,90]);
+  context.fillText("N", northpole[0], northpole[1]);
+
+  var southpole = projection([0,-90]);
+  context.fillText("S", southpole[0], southpole[1]);
+
+  // source: http://www.ripublication.com/aasa/aasav3n1_02.pdf
+  var collision = projection([97.88,72.51]);
+  context.textBaseline = "middle";
+  context.textAlign = "left";
+  context.fillText("2009 Collision", collision[0]+8, collision[1]);
+
+  context.fillStyle = "#333";
+  context.beginPath();
+  context.arc(collision[0], collision[1], 2.5, 0, 2*Math.PI);
+  context.fill();
+
+  context.fillStyle = color("IRIDI");
+  context.fillText("Iridium 33 Debris", 0.76*width, 0.25*height-15);
+  context.fillStyle = color("COSMO");
+  context.fillText("Kosmos 2251 Debris", 0.76*width, 0.25*height);
+
+  d3.text("debris.txt", function(error2, data) {
+    if (error2) throw error2;
+
+    var stations = [];
+    var lines = data.split("\n");
+    lines.forEach(function(line) {
+      if (line.length == 0) return;
+
+      if (line[0] == "1") {
+        var obj = stations[stations.length-1];
+        obj.tle1 = line;
+        return; 
+      }
+
+      if (line[0] == "2") {
+        var obj = stations[stations.length-1];
+        obj.tle2 = line;
+        return; 
+      }
+      
+      stations.push({
+        name: line.trim()
+      });
+    });
+
+    var iridium = stations.filter(function(d) { return d.name.indexOf("IRIDIUM") > -1; });
+    var kosmos = stations.filter(function(d) { return d.name.indexOf("COSMOS") > -1; });
+
+    var now = new Date();
+
+    d3.timer(function(elapsed) {
+      var time = new Date(now.getTime() + 120*elapsed);
+      overlay.text("Predicted debris positions at " + timeFormat(time));
+
+      context3.clearRect(0,0,width,height);
+      context3.globalAlpha = .5;
+      context3.drawImage(canvas2.node(),0,0);
+      context2.globalCompositeOperation = "source-over";
+      context2.clearRect(0,0,width,height);
+      context2.drawImage(canvas3.node(),0,0);
+      context2.globalCompositeOperation = "darken";
+      context2.globalAlpha = 0.6;
+
+      context2.fillStyle = color("IRIDI");
+      iridium.forEach(function(d) {
+        context2.beginPath();
+        plotsat(d, time);
+        context2.fill();
+      });
+
+      context2.fillStyle = color("COSMO");
+      kosmos.forEach(function(d) {
+        context2.beginPath();
+        plotsat(d, time);
+        context2.fill();
+      });
+    });
+
+    function plotsat(station, time) {
+      var satrec = satellite.twoline2satrec(station.tle1, station.tle2);
+
+      // increment time by 5 minutes
+
+      var positionAndVelocity = satellite.propagate(
+          satrec,
+          time.getUTCFullYear(),
+          time.getUTCMonth() + 1, // Note, this function requires months in range 1-12.
+          time.getUTCDate(),
+          time.getUTCHours(),
+          time.getUTCMinutes(),
+          time.getUTCSeconds()
+      );
+
+      if (!positionAndVelocity.position) {
+        if (time.getTime() - now.getTime() > 1000) return;
+        console.log("No position data for:");
+        console.log(station, satrec);
+        return;
+      }
+
+      var gmst = satellite.gstimeFromDate(
+          time.getUTCFullYear(),
+          time.getUTCMonth() + 1, // Note, this function requires months in range 1-12.
+          time.getUTCDate(),
+          time.getUTCHours(),
+          time.getUTCMinutes(),
+          time.getUTCSeconds()
+      );
+
+      // The position_velocity result is a key-value pair of ECI coordinates.
+      // These are the base results from which all other coordinates are derived.
+      var positionEci = positionAndVelocity.position,
+          velocityEci = positionAndVelocity.velocity;
+
+      var positionGd = satellite.eciToGeodetic(positionEci, gmst)
+      drawSat(station, positionGd);
+    };
+  });
+
+  function drawSat(sat, pos) {
+    var name = sat.name;
+    var xy = projection([pos.longitude*180/Math.PI, pos.latitude*180/Math.PI]);
+    context2.arc(xy[0],xy[1],2,0,2*Math.PI);
+  };
+});
+
+d3.select(self.frameElement).style("height", height + "px");
+
+</script>
