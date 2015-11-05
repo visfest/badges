@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <!-- <link rel="stylesheet" href="css/main.css"> -->
+
+<link rel="stylesheet" href="webfontkit-20140304-042055/stylesheet.css">
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+    <style>
+body, html{
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  font-family: 'open_sansextrabold';
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0px -4px 0px rgba(0,0,0,0.8);
+}
+
+.overlay{
+  text-align: center;
+  box-sizing: border-box;
+  /*border: 1px solid red;*/
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+span{
+  display: block;
+}
+
+.container{
+}
+
+.shade {
+  margin: 100px auto 0 auto;
+  padding: 20px 4px 20px 4px;
+  background-color: rgba(0,0,0,0.45);
+  width: 81%;
+  border-radius: 30px;
+}
+
+.first-name{
+  font-size: 132px;
+  margin-top: 10px;
+  word-break: break-all;
+}
+
+.last-name{
+  font-size: 58px;
+  line-height: 1em;
+}
+
+.github-name{
+  font-size: 70px;
+}
+
+.conf-id {
+  font-size: 100px;
+  text-align: center;
+}
+
+.bg-vis iframe{
+  border: none;
+}
+
+iframe{
+  /*-webkit-transform: translate(28px, 472px);*/
+}
+
+.bg-vis{
+  overflow: hidden;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+#github {
+  margin: 40px 0 15px 0;
+}
+
+.github-name, .github-logo, .ddc {
+  display: inline-block;
+  /*margin: 0 25px -20px 0;*/
+}
+
+svg.design {
+  margin: 0 0 -20px 20px;
+}
+
+.github-logo img {
+  position: relative;
+  width: 100px;
+  margin: 0 25px -20px 0;
+}
+
+.uber-logo {
+  position: absolute;
+  bottom: 230px;
+  display:block;
+  width: 100%;
+}
+
+
+.conf-id {
+  position: absolute;
+  bottom: 50px;
+  width: 100%;
+}
+.conf-id svg {
+  width: 100%;
+  height: 250px;
+
+}
+
+/*
+.conf-id img {
+  width: 850px; 
+  border-radius: 36px;
+  padding: 0px;
+  background-color: rgba(0,0,0,0.35);
+}
+*/
+
+.date {
+  position: relative;
+  bottom: -840px;
+  /*margin-top: 780px;*/
+  font-size: 2.2em;
+  font-weight: 800;
+}
+
+.data {
+
+}
+</style>
+  </head>
+  <body>
+    <div class="bg-vis">
+      <iframe name="frame1"></iframe>
+    </div>
+    <div class="overlay">
+      <div class="container">
+        <div class="shade">
+          <span class="first-name"></span>
+          <span class="last-name"></span>
+            <div id="github">
+            <!--<div class="github-logo"><img class="logo" src="img/github-logo.png" /></div> -->
+              <div class="github-name"></div>
+            </div>
+        </div>
+      </div>
+
+        <div class="conf-id">
+        <svg viewBox="0 0 1050 300">
+          <defs>
+          <svg>
+            <clipPath id="uber">
+            <path
+               d="M 672.125,718.297 V 307.074 c 0,-140.711 -67.883,-223.8748 -271.75,-223.8748 -204.465,0 -272.691,83.1638 -272.691,223.8748 V 596.148 C 125.047,664.668 68.9102,719.742 0,719.742 v -79.844 c 24.9844,0 44.8203,-19.406 47.2031,-43.75 V 278.98 C 47.2031,115.973 175.059,0.121094 400.375,0.121094 c 224.977,0 352.32,115.851906 352.32,278.858906 v 439.317 h -80.57" />
+               <path
+               
+               d="M 3012.84,94.8594 V 287.492 c 0,26.477 22.47,48.18 48.52,48.688 h 351.04 v 81.211 h -352.23 c -17.03,-0.512 -32.78,-3.914 -47.33,-10.219 v 232.047 h 572.87 V 720 H 2931.46 V 14.0781 h 678.09 v 80.7813 h -596.71" />
+               <path
+               d="m 4465.11,366.402 c -17.03,0 -33.12,-3.492 -48.01,-9.535 l -0.68,286.945 442.29,0.172 c 76.78,0 138.84,-61.882 138.84,-138.75 0,-76.781 -62.06,-139.089 -138.84,-139.089 z M 5083.6,89.9219 c -19.4,-15.5742 -47.07,-12.4258 -63.92,5.4492 L 4865.27,291.41 c 115.34,3.574 207.61,98.059 207.61,213.992 0,118.664 -96.11,214.598 -214.59,214.598 H 4335.64 V 14.0781 h 80.78 l 0.76,229.9999 c 0.85,25.621 22.56,46.992 48.78,46.992 l 297.25,-0.09 193.14,-245.2339 c 44.43,-52.51954 122.49,-61.2891 176.71,-18.6445 l -49.46,62.8203" />
+               <path
+               d="m 2003.46,89.9219 -445.64,0.4297 V 290.559 c 0.3,26.726 22.52,49.453 49.03,49.453 l 396.61,0.09 c 69.12,0 124.87,-55.926 124.87,-124.711 0,-69.543 -55.75,-125.4691 -124.87,-125.4691 z m -445.64,553.8901 447.68,-0.507 c 62.74,0 113.47,-50.907 113.47,-113.727 0,-62.48 -50.73,-113.297 -113.47,-113.297 h -405.37 c -14.77,-1.019 -29.33,-4.422 -42.31,-10.047 z m 562,-264.984 c 45.46,34.649 75.25,89.207 75.25,151.09 0,104.617 -84.95,189.824 -189.82,189.824 L 1477.13,720 V 14.0781 h 526.33 c 111,0 200.89,90.0629 200.89,201.3129 0,67.418 -33.45,126.921 -84.53,163.437" />
+            </clipPath>
+            </svg>
+            <g id="sized" transform="matrix(1.3333333,0,0,-1.3333333,0,50)scale(0.05)">
+            <rect x=0 y=0 width=6000 height=2000 fill=black clip-path="url(#uber)"></rect>
+          </g>
+          <mask id="masker">
+            <rect id="bg" x="0" y="0" width="100%" height="100%" fill="white"/>
+            <use xlink:href="#sized" fill="black" transform="translate(350,30)"/>
+            <text 
+              style="font-size:100px;font-family:open_sansextrabold;font-weight:800;text-anchor:middle"
+              x=525
+              y=180
+            >d3.unconf(2015)</text>
+          </mask>   
+          </defs>
+          <g transform="translate(0,30)">
+          <rect id="masked" x=0 y=0 width=1050 height=220 fill=#e0e0e0 mask="url(#masker)" rx=36 ry=36></rect>
+          </g>
+    
+       </svg>
+      </div>
+    </div>
+    <script src="d3.js" charset="utf-8"></script>
+    <script>
+var w = 1050, h = 1500
+var svg = d3.select('svg').attr({width: w, height: h });
+d3.select('svg.data').attr("width",100).attr("height",100);
+d3.select('svg.design').attr("width",100).attr("height",100);
+d3.select('svg.code').attr("width",100).attr("height",100);
+var iframe = d3.select('iframe')
+var overlay = d3.select('.overlay').style({width: w + 'px', height: h + 'px' })
+window.is_ready = false
+
+
+iframe.style({width: w + 'px', height: h + 'px' })
+
+
+var opts = decodeURIComponent(window.location.hash.split('#')[1] || '')
+var is_test = false
+try{
+  opts = JSON.parse(opts)
+  console.log("OPTS", opts)
+}catch(e){
+  console.log("errr")
+  opts = {
+      url: opts
+    , firstName: 'Elijah'
+    , lastName: 'Meeks'
+    , githubName: 'emeeks'
+    , delay: 1000
+    , frameDelay: 400
+    , url: 'http://localhost:8888/badges/k-izzo'
+    , bg: "dark"
+  }
+  is_test = true
+}
+
+//opts.url = opts.url || 'badges/saraquigley/index.html'
+//opts.url = opts.url || 'http://bl.ocks.org/enjalot/raw/c21840890a4790632124/'
+//opts.url = opts.url || 'http://bl.ocks.org/enjalot/raw/25aeeb7e41f46271db58/'
+
+d3.select('.github-name').text("@" + opts.githubName)
+if(opts.firstName)
+  d3.select('.first-name').text(opts.firstName)
+else d3.select('.first-name').style('opacity', 0).text('..')
+
+if(opts.lastName) d3.select('.last-name').text(opts.lastName)
+else d3.select('.last-name').style('opacity', 0).text('..')
+
+  // var color1, color2;
+  // if(opts.bg === "light") {
+  //   color1 = "#a0a0a0"
+  //   color2 = "#333"
+
+  // } else {
+  //   color1 = "#e0e0e0";
+  //   color2 = "#fff"
+  // }
+  
+   var duration = opts.frameDelay * 10;
+  var ease = "cubic";
+   function infini() {
+   d3.select("#masked")
+     .style("fill", "rgba(0,0,0,0.45)");
+     // .transition()
+     // .ease(ease)
+     // .duration(duration)
+     // .style("fill", color2)
+     // .each("end", function() {
+     //   d3.select("#masked")
+     //     .transition()
+     //     .ease(ease)
+     //     .duration(duration)
+     //     .style("fill", color1)
+     //     .each("end", infini)
+     // })
+   }
+   infini();
+
+iframe.attr('src', opts.url)
+  .on('load', function(){
+    // d3.select("")
+    take_badge_pic();
+  });
+
+// red: rgba(228,26,28, 0.65)
+// green: rgba(77,175,74, 0.65)
+// blue: rgba(55,126,184, 0.65)
+
+
+d3.select(".shade").transition().duration(7000).styleTween("background-color", function() { return interpolateRgba("rgba(0,0,0,0.45)", "rgba(77,175,74,0.65)"); });
+
+function interpolateRgba(fromRgba, toRgba) {
+    var fromRgb = rgb(fromRgba), toRgb = rgb(toRgba),
+          rgbInterp = d3.interpolateRgb(fromRgb.rgb, toRgb.rgb),
+          aInterp = d3.interpolate(fromRgb.a, toRgb.a)
+
+    return function (t) {
+        var c = d3.rgb(rgbInterp(t)), target = toRgba
+        return 'rgba(' + c.r + ', ' + c.g + ', ' + c.b + ', ' + aInterp(t) + ')'
+    }
+    function rgba(colString) {
+        if (colString.search(/rgba/) === 0) {
+            return colString
+        } else {
+            if (colString.search(/rgb/) === 0) {
+                return colString.replace(/rgb(.*)\)/, 'rgba$1, 1.0)')
+            }
+        }
+    }
+    function rgb(colString) {
+        if (colString.search(/rgba/) === 0) {
+            var regExp = /rgba(.*),\s?(.*)\)/,
+                   results = regExp.exec(colString)
+            return {
+                rgba: results[0],
+                rgb: 'rgb' + results[1] + ')',
+                a: results[2]
+            }
+        } else {
+            if (colString.search(/rgb/) === 0) {
+                return {
+                    rgba: null,
+                    rgb: colString,
+                    a: 1.0
+                }
+            } else {
+                var c = d3.rgb(colString)
+
+                return {
+                    rgba: null,
+                    rgb: 'rgb(' + c.r + ',' + c.g + ',' + c.b + ')',
+                    a: 1.0
+                }
+            }
+        }
+    }
+}
+    </script>
+  </body>
+</html>
