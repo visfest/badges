@@ -10,22 +10,37 @@ if(!badge){
   attendees = JSON.parse(file.read());
   badges = JSON.parse(fs.open('./data/badges.json', 'r').read());
 }else{
+  /*
   attendees = [
     { githubName: '', url: 'badges/' + badge + '/index.html', firstName: '', lastName: '' }
   ];
+  */
+  var opts = {
+      firstName: 'Elijah'
+    , lastName: 'Meeks'
+    , githubName: 'emeeks'
+    , delay: 1000
+    , frameDelay: 500
+    , url: 'http://bl.ocks.org/enjalot/raw/25aeeb7e41f46271db58/'
+    , bg: "light" // can also be "dark"
+  }
+  attendees = [ opts ]
   badges = [];
 }
 
 // pick a random badge if an attendee does have a badge
+/*
 var bid = 0;
 attendees.map(function(a, i){
   if(a.url) {
   a.url = badges[bid];
   bid = ++bid % badges.length;}
 });
+*/
 
 function create_badge_url(opts){
-  return 'http://localhost:8888/bin/gists/badges-github/badges/index.html#' + encodeURIComponent(JSON.stringify(opts));
+  //return 'http://localhost:8888/bin/gists/badges-github/badges/index.html#' + encodeURIComponent(JSON.stringify(opts));
+  return 'http://localhost:8888/layoutA.html#' + encodeURIComponent(JSON.stringify(opts));
 }
 
 var frames = 10;
@@ -53,17 +68,22 @@ function finish_up(){
 }
 
 function take_badge_pic(opts, done){
-  console.log('about to open a page')
+  console.log('about to open a page', JSON.stringify(opts))
 
   // var url = create_badge_url(opts);
   // manually set the badge URL
-  var url = 'http://localhost:8888/bin/gists/badges-github/index.html#badges/satellite/index.html';
+  //var url = 'http://localhost:8888/bin/gists/badges-github/index.html#badges/satellite/index.html';
+  //var url = 'http://localhost:8888/layoutA.html#http://bl.ocks.org/enjalot/raw/c21840890a4790632124/'
+  //var url = 'http://localhost:8888/layoutA.html#' +  opts.url; //http://bl.ocks.org/enjalot/raw/25aeeb7e41f46271db58/'
+  var url = create_badge_url(opts);
+  var delay = opts.delay || 666;
+  var frameDelay = opts.frameDelay || 215
 
   var page = require('webpage').create();
   var w = 1050, h = 1500
   page.clipRect = { top: 0, left: 0, width: w, height: h}
   page.viewportSize = { width: w, height: h}
-    console.log('url',url)
+  console.log('url',url)
   page.open(url, function(status){
     console.log('open page',url);
     console.log('status', status);
@@ -78,13 +98,14 @@ function take_badge_pic(opts, done){
             
             // Render an image with the frame name
             page.evaluate(function(){ if(window.step) window.step(); });
+            console.log("rendering frame", frame)
             page.render("output/frame-"+ (frame++) +".png", {format: 'png', quality: '100'});
-            
+
             // Exit after 10 images
             if(frame > 9) {
               phantom.exit();
             }
-          }, 215);
-        }, 666);
+          }, opts.frameDelay);
+        }, opts.delay);
     });
 }
