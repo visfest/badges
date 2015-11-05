@@ -1,0 +1,5 @@
+# Motion Wheel
+
+In this example, we used a driving record dataset and applied the following three attributes in the visualizations: travelled distance, average speed, and number of harsh actions. We propose a new visualization called Driving Behavior Wheel (DBW): We used DBW to show the driving behavior of a driver. Bars are used to representa drivers trips and are radially ordered by the date of the trip to form a wheel. The color and height of a bar refer to the average speed of the trip and the traveled distance of the trip, respectively. The numberof harsh actions is mapped to the frequency of motion. As a result, when there is no harsh action in a trip, the corresponding bar stays still. Otherwise, the bar moves repeatedly inward and outward with respect to the center of the wheel,while a bigger amount of harsh actions in a trip yields faster bar movement
+
+Built with blockbuilder.org

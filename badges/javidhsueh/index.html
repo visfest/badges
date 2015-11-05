@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+  <script src="data.json"></script>
+  <style>
+    body { margin:0;position:fixed;top:0;right:0;bottom:0;left:0; }
+    svg { width: 100%; height: 100%; }
+  </style>
+</head>
+
+<body>
+  <div id="container"> </div>
+  <script>
+    var RADIANS = Math.PI / 180;
+    var motion_setting = {
+        radius_min: 2,
+        duration: {
+            max: 1500,
+            min: 150,
+            constant: 1000
+        },
+        movement: 10,
+        height_min: 10,
+        color_range: ['#fff', '#f00']
+    };
+
+    window.requestAnimFrame = (function requestAnimFrame(){
+        return  window.requestAnimationFrame   ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame    ||
+            window.oRequestAnimationFrame      ||
+            window.msRequestAnimationFrame     ||
+            function(callback, element){
+                return window.setTimeout(callback, 1000 / 60);
+            };
+    })();
+
+    window.cancelRequestAnimFrame = ( function cancelRequestAnimFrame() {
+        return window.cancelAnimationFrame              ||
+            window.webkitCancelRequestAnimationFrame    ||
+            window.mozCancelRequestAnimationFrame       ||
+            window.oCancelRequestAnimationFrame         ||
+            window.msCancelRequestAnimationFrame        ||
+            clearTimeout;
+    } )();
+
+    var containerID = 'container';
+    var containerWidth  = 1050;
+    var containerHeight = 1500;
+    var margin = {top: 15, right: 15, bottom: 15, left: 15};
+
+    // data
+    var trips = data;
+    var total_trips = trips.length;
+
+    // calculate radius
+    var width = containerWidth - margin.left - margin.right;
+    var height = containerHeight - margin.top - margin.bottom;
+    var inner_radius = (width > height? height:width) / 5.0;
+    var outter_radius = 2.5 * inner_radius;
+    var width_unit = 2.0 * Math.PI * inner_radius / total_trips;
+    var bar_length = outter_radius - inner_radius;
+    var scaled_inner_radius = inner_radius;
+
+    // color
+    var color_option = 'speed';
+    var _color_scale = d3.scale.linear()
+        .domain(d3.extent(data, function iterator(d) {
+            return d[color_option];
+        }))
+        .range(motion_setting.color_range);
+    var trip_color_scale = function trip_color_scale(trip) {
+        return _color_scale(trip[self.color_option]);
+    };
+
+    //motion
+    var speed_option = 'harsh_accl_count';
+    var speed_scale = d3.scale.linear()
+        .range([motion_setting.duration.max, motion_setting.duration.min])
+        .domain(d3.extent(data, function iterator(d) {
+            return d[speed_option];
+        }));
+
+    // height
+    var height_option = 'total_distance';
+    var height_scale = d3.scale.linear()
+        .range([motion_setting.height_min, bar_length])
+        .domain(d3.extent(data, function iterator(d) {
+            return d[height_option];
+        }));
+
+    // initialize container
+    var container = d3.select('#' + containerID)
+        .attr('width', containerWidth)
+        .attr('height', containerHeight)
+        .style('position','relative');
+
+    var svg = container
+        .insert('svg:svg')
+        .attr('width', containerWidth)
+        .attr('height', containerHeight);
+    var g = svg.append('svg:g')
+        .attr('transform', 'translate(' +
+        containerWidth / 2 + ',' + containerHeight / 2 + ')');
+
+    // layout calculation
+    var degree_unit = 360 / total_trips;
+    var temp_degree = 0;
+    trips.forEach(function iterator(trip) {
+        // shape
+        trip.bar_length = height_scale(trip[height_option]);
+        trip.width = width_unit;
+        // degree
+        trip.start_degree = temp_degree * RADIANS;
+        trip.end_degree = (temp_degree + degree_unit) * RADIANS;
+        trip.mid_degree = (trip.start_degree + trip.end_degree) / 2.0;
+        temp_degree += degree_unit;
+    });
+
+    // render bars
+    g.selectAll('.slice_svg')
+        .data(trips)
+        .enter()
+        .append('svg:g')
+        .attr('class','slice_svg')
+        .each(function iterator(trip, idx) {
+            var inner_radius = scaled_inner_radius;
+            var bar_length = trip.bar_length;
+            var self_svg = d3.select(this);
+            var color = trip_color_scale(trip);
+            self_svg.append('rect')
+                .attr('class','segment')
+                .attr('width', bar_length)
+                .attr('height',trip.width)
+                .attr('fill',color)
+                .attr('transform', 'rotate(' +
+                (trip.mid_degree * 180 / Math.PI - 90) +
+                ')  translate(' + inner_radius + ')');
+            set_trip_motion(trip, idx, self_svg);
+        });
+
+    function set_trip_motion(trip, trip_idx, self_svg) {
+        // when update the data, should stop previous sprite
+        if (trip.sprite) {
+            cancelRequestAnimFrame(trip.sprite);
+        }
+        var inner_radius = scaled_inner_radius;
+        var color = trip_color_scale(trip);
+        var interval = speed_scale(trip[speed_option]);
+        if (Math.abs(motion_setting.duration.max - interval) < 1) {
+            return;
+        }
+        //for sprite
+        var now, delta;
+        var then = Date.now();
+        var direction_flag = false;
+        var self_trip = trip;
+
+        var movement = motion_setting.movement;
+        var bar_length = trip.bar_length;
+        var expand_radius = [inner_radius + movement,
+            inner_radius + movement + bar_length];
+        var shrink_radius = [inner_radius - movement,
+            inner_radius - movement + bar_length];
+
+        trip.sprite_function =  function sprite_function() {
+            now = Date.now();
+            delta = now - then;
+            if (delta > interval) {
+                var radius = direction_flag? expand_radius: shrink_radius;
+                self_svg.select('.segment')
+                    .transition().duration(interval)
+                    .attr('transform', 'rotate(' +
+                        (self_trip.mid_degree * 180 / Math.PI - 90) +
+                        ')  translate(' + radius[0] + ')');
+                direction_flag = !direction_flag;
+                then = now;
+            }
+            self_trip.sprite = requestAnimationFrame(self_trip.sprite_function);
+        };
+        // start sprite
+        trip.sprite = requestAnimationFrame(trip.sprite_function);
+    }
+
+
+  </script>
+</body>

@@ -15,6 +15,7 @@ if(!badge){
     { githubName: '', url: 'badges/' + badge + '/index.html', firstName: '', lastName: '' }
   ];
   */
+  /*
   var opts = {
       firstName: 'Elijah'
     , lastName: 'Meeks'
@@ -24,6 +25,62 @@ if(!badge){
     , url: 'http://bl.ocks.org/enjalot/raw/25aeeb7e41f46271db58/'
     , bg: "light" // can also be "dark"
   }
+  */
+  /*
+  var opts = {
+      firstName: 'Kenneth'
+    , lastName: 'Izzo'
+    , githubName: 'k-izzo'
+    , delay: 3000
+    , frameDelay: 500
+    , url: 'http://bl.ocks.org/saraquigley/raw/56ede2f899c8a63fc1d5/'
+    , bg: "light"
+  }
+  */
+  /*
+  var opts = {
+      firstName: 'Siu-Mei'
+    , lastName: 'Man'
+    , githubName: 'siumei'
+    , delay: 700
+    , frameDelay: 420
+    , url: 'http://localhost:8888/badges/siumei/index.html'
+    , bg: "light" // can also be "dark"
+  }
+  */
+  /*
+  var opts = {
+      firstName: 'Mike'
+    , lastName: 'Bostock'
+    , githubName: 'mbostock'
+    , delay: 800
+    , frameDelay: 180
+    //, url: 'http://localhost:8888/badges/poisson/index.html'
+    , url: 'http://localhost:8888/badges/spiral/index.html'
+    , bg: "light" // can also be "dark"
+  }
+  */
+  /*
+  var opts = {
+      firstName: 'Ken'
+    , lastName: 'Penn'
+    , githubName: 'kenpenn'
+    , delay: 500
+    , frameDelay: 250
+    , url: 'http://localhost:8888/badges/kenpenn/index.html'
+    , bg: "dark" // can also be "dark"
+  }
+  */
+  var opts = {
+      firstName: 'Kai'
+    , lastName: 'Chang'
+    , githubName: 'syntagmatic'
+    , delay: 1000
+    , frameDelay: 350
+    , url: 'http://localhost:8888/badges/satellite/index.html'
+    , bg: "light" // can also be "dark"
+  }
+
   attendees = [ opts ]
   badges = [];
 }
@@ -40,7 +97,8 @@ attendees.map(function(a, i){
 
 function create_badge_url(opts){
   //return 'http://localhost:8888/bin/gists/badges-github/badges/index.html#' + encodeURIComponent(JSON.stringify(opts));
-  return 'http://localhost:8888/layoutA.html#' + encodeURIComponent(JSON.stringify(opts));
+  //return 'http://localhost:8888/layoutA.html#' + encodeURIComponent(JSON.stringify(opts));
+  return 'http://localhost:8888/layoutB.html#' + encodeURIComponent(JSON.stringify(opts));
 }
 
 var frames = 10;

@@ -1,0 +1,315 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Styling SVG Markers</title>
+  <style id="styles">
+    html {
+      background: hsl(0, 0%, 0%);
+      -webkit-background-size: cover;
+         -moz-background-size: cover;
+              background-size: cover;
+    }
+    body {
+    }
+    .wrap {
+      max-width: 1050px;
+      margin: auto;
+      overflow: none;
+    }
+    .svg-container {
+      margin-top: 500px;
+      margin-left: 100px;
+      width: 1020px;
+      padding: 15px;
+      float: left;
+    }
+    .color-path {
+      fill: none;
+      stroke-width: 2.5px;
+    }
+    .layout-path {
+      fill: none;
+      stroke: none;
+    }
+    .marker {
+      stroke: none;
+    }
+    .btn-light {
+      cursor: pointer;
+      fill: url(#btn-light);
+      stroke: hsl(0, 0%, 60%);
+      stroke-width: .5px;
+    }
+    .btn-light-txt {
+      font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+      text-anchor: middle;
+      fill: hsl(0, 0%, 30%);
+      stroke: none;
+      font-size: 1rem;
+      -webkit-user-select: none;
+      pointer-events: none;
+    }
+    .splainin {
+      font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+      background : white;
+      border-radius: 4px;
+      color: hsl(0, 0%, 30%);
+      float: left;
+      font-size: .85rem;
+      width: 380px;
+      padding: 10px 12px;
+      margin: 40px auto;
+    }
+    .splainin a {
+      color: hsl(203, 100%, 50%);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .splainin ul {
+      margin: 0;
+      padding-left: 8px;
+      list-style: none;
+    }
+    .pi {
+      color: hsl(332, 98%, 51%);
+    }
+    @media only screen
+      and (max-width : 870px) {
+        .svg-container {
+          float: none;
+          display: block;
+          margin: auto;
+        }
+        .splainin {
+          float: none;
+          display: block;
+        }
+    }
+
+  </style>
+</head>
+<body>
+<div class="wrap">
+<div class="svg-container">
+  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:xml="http://www.w3.org/XML/1998/namespace" xml:space="preserve"
+    x="0" y="0" width="700px" height="700px" viewBox="0 0 500 550" >
+    <defs>
+       <marker id="marker-circle" markerWidth="10" markerHeight="10" refx="5" refy="5">
+        <circle cx="5" cy="5" r="3" class="marker"/>
+      </marker>
+      <marker id="marker-square" markerWidth="7" markerHeight="7" refx="4" refy="4"orient="auto">
+        <rect x="1" y="1" width="5" height="5" class="marker"/>
+      </marker>
+      <marker id="marker-arrow" markerWidth="12" markerHeight="12" refx="6" refy="4" orient="auto">
+       <path d="M 1 1 7 4 1 7 Z" class="marker"/>
+      </marker>
+      <linearGradient id="btn-light" x1="0%" y1="0%" x2="0%" y2="100%" spreadMethod="pad">
+        <stop stop-color="hsl(0, 0%, 90%)" offset="0"></stop>
+        <stop stop-color="hsl(0, 0%, 92%)" offset="0.05"></stop>
+        <stop stop-color="hsl(0, 0%, 97%)" offset="0.33"></stop>
+        <stop stop-color="hsl(0, 0%, 87%)" offset="0.67"></stop>
+        <stop stop-color="hsl(0, 0%, 84%)" offset="1"></stop>
+      </linearGradient>
+    </defs>
+    <g class="viz">
+      <path id="start-path" class="layout-path" d="M210,250 a40,40 0 1,0 80,0 a40,40 0 1,0 -80,0"></path>
+      <path id="quad-path" class="layout-path" d="M165,250 a85,85 0 1,0 170,0 a85,85 0 1,0 -170,0"></path>
+      <path id="mid-path" class="layout-path" d="M110,250 a140,140 0 1,0 280,0 a140,140 0 1,0 -280,0"></path>
+      <path id="end-path" class="layout-path" d="M10,250 a240,240 0 1,0 480,0 a240,240 0 1,0 -480,0"></path>
+    </g>
+    
+  </svg>
+</div><!-- .svg-container-->
+</div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', function () {
+
+    "use strict";
+      // rainbow starting with blue
+    var colors = ['hsl-242', 'hsl-259', 'hsl-273', 'hsl-296', 'hsl-341',
+                  'hsl-359', 'hsl-18',  'hsl-35',  'hsl-52',  'hsl-83',
+                  'hsl-127', 'hsl-160', 'hsl-190', 'hsl-212', 'hsl-227'];
+
+       // add styles to the page for colors and SVG paths
+    var addStyles = function () {
+
+        // select the <style> tag
+      var styles = document.querySelector('#styles');
+
+        // select the <style> tag's CSSStyleSheet
+      var styleSheet = styles.sheet;
+
+        // create styles for the colors, the paths, and the markers
+      colors.forEach(function (color) {
+
+        var hslColor = color.replace( '-', '(' ) + ', 100%, 50%)';
+
+        var colorStyle = '.' + color + ' { stroke: ' + hslColor + '; fill: ' + hslColor + '; color: ' + hslColor+ '; }';
+
+        var pathStyle = '.color-path.' + color + ' { ' +
+                        'marker-start: url(#marker-circle-' + color + '); ' +
+                          'marker-mid: url(#marker-square-' + color + '); ' +
+                          'marker-end: url(#marker-arrow-'  + color + '); ' +
+                        '; }';
+
+          // index 0 to add to the front of the CSSRuleList,
+          // to avoid adding !important to the styles already present
+        styleSheet.insertRule(pathStyle, 0);
+        styleSheet.insertRule(colorStyle, 0);
+      });
+     };
+
+      // create def elements for each color and marker type; append to defs
+    var addDefs = function () {
+
+      var defs = document.querySelector('defs');
+
+        // add the appropriate id to the defs element, add the appropriate class to its marker
+      var colorDef = function (def, color) {
+
+          // add a color class to the def element's marker child
+        var marker = def.querySelector('.marker');
+        //marker.classList.add(color);
+        d3.select(marker).classed(color, true)
+
+          // set the appropriate id on the def element
+        def.id = def.id + '-' + color;
+      };
+      colors.forEach(function (color) {
+          // for each color, select and clone the def element for each marker
+        var defArray = [];
+        defArray.push(defs.querySelector('#marker-circle').cloneNode(true));
+        defArray.push(defs.querySelector('#marker-square').cloneNode(true));
+        defArray.push(defs.querySelector('#marker-arrow').cloneNode(true));
+        defArray.forEach(function (def) {
+          colorDef(def, color);
+          defs.appendChild(def);
+        });
+      });
+    };
+         // create def elements for each color and marker type; append to defs
+    var addMefs = function () {
+      var forEach = Array.prototype.forEach;
+      var mefs = document.querySelectorAll('span.mef');
+
+        colors.forEach(function ( color, cx ) {
+        if ( mefs[cx] ) {
+          //mefs[cx].classList.add(color);
+          d3.select(mefs[cx]).classed(color, true)
+        }
+      });
+    };
+
+      // create arrays of x,y objects for the start, middle and end of paths
+    var crtCtrlPts = function (markerPos) {
+      var ctrlArr = [];
+      var ctrlPath = document.querySelector('#' + markerPos + '-path')
+      var getPts = function (path) {
+        var pathLen = path.getTotalLength();
+        var pathPart = 1 / colors.length;
+        colors.forEach(function (color, cx) {
+          var pathTo = pathLen * ( pathPart * (cx + 1) );
+          if ( markerPos === 'quad' ) { pathTo -= 25; }
+          var gp = ctrlPath.getPointAtLength( pathTo );
+          var pt = { x: Math.round(gp.x), y: Math.round(gp.y) };
+          ctrlArr.push(pt);
+        });
+      };
+      getPts(ctrlPath);
+
+      return ctrlArr.reverse();
+    };
+
+      // control points for paths
+    var ctrlPts = {
+      start : crtCtrlPts('start'),
+      quad  : crtCtrlPts('quad'),
+      mid   : crtCtrlPts('mid'),
+      end   : crtCtrlPts('end')
+    };
+
+    var crtPaths = function () {
+      var viz = document.querySelector('.viz');
+
+      var addPath = function(color, cx) {
+        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        var pts = {};
+        var dString;
+        var posArr = Object.keys(ctrlPts);
+        posArr.forEach(function (pos) {
+          var pt = ctrlPts[pos][cx];
+          pts[pos] = pt;
+        });
+        path.id = 'qp-' + cx;
+        dString = 'M ' + pts.start.x + ' ' + pts.start.y +
+                 ' Q ' + pts.quad.x + ' ' + pts.quad.y +
+                 ', '  + pts.mid.x + ' ' + pts.mid.y +
+                 ' T ' + pts.end.x + ' ' + pts.end.y;
+
+        path.setAttribute( 'd', dString );
+        //path.classList.add( 'color-path', color );
+        d3.select(path).classed('color-path', true)
+        d3.select(path).classed(color, true)
+        viz.appendChild(path);
+
+      };
+
+      colors.forEach(function ( color, cx ) { addPath( color, cx ); });
+    };
+
+    var forEach = Array.prototype.forEach;
+    var colorsLength = colors.length;
+    var cycleTo;
+    var cycleMs = 30;
+    var cycleColors = function ( paths, mefs ) {
+
+      var nextColor = function(colorClass) {
+            var colorX = colors.indexOf(colorClass);
+            colorX -= 1;
+            if ( colorX < 0 ) { colorX = colors.length -1; }
+            return colors[colorX];
+          };
+
+      forEach.call( paths, function ( path ) {
+        var colorClass = path.getAttribute('class')
+                             .replace('color-path ', '');
+        var nextHsl = nextColor(colorClass);
+        path.setAttribute('class', 'color-path ' + nextHsl);
+      });
+      forEach.call( mefs, function ( mef ) {
+        var colorClass = mef.className.replace('mef ', '');
+        var nextHsl = nextColor(colorClass);
+        mef.className = 'mef ' + nextHsl;
+      });
+      cycleTo = setTimeout(function () {
+        cycleColors( paths, mefs );
+      }, cycleMs );
+    };
+
+    //document.querySelector('#cycle-btn').addEventListener('click', gocycle);
+    function gocycle(evt) {
+      var paths, mefs;
+
+      //evt.stopPropagation();
+      
+        paths = document.querySelectorAll('.viz .color-path');
+        mefs = document.querySelectorAll('span.mef');
+        cycleTo = setTimeout(function () {
+          cycleColors( paths, mefs );
+        }, cycleMs );
+    }
+
+    addStyles();
+    addDefs();
+    addMefs()
+    crtPaths();
+    gocycle()
+
+  });
+
+</script>
+</body>
+</html>

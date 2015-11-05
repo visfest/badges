@@ -210,15 +210,14 @@ try{
   console.log("OPTS", opts)
 }catch(e){
   console.log("errr")
-  opts = {
-      url: opts
-    , firstName: 'Elijah'
-    , lastName: 'Meeks'
-    , githubName: 'emeeks'
+  var opts = {
+      firstName: 'Kai'
+    , lastName: 'Chang'
+    , githubName: 'syntagmatic'
     , delay: 1000
-    , frameDelay: 400
-    , url: 'http://localhost:8888/badges/k-izzo'
-    , bg: "dark"
+    , frameDelay: 350
+    , url: 'http://localhost:8888/badges/satellite/index.html'
+    , bg: "light" // can also be "dark"
   }
   is_test = true
 }
@@ -235,33 +234,34 @@ else d3.select('.first-name').style('opacity', 0).text('..')
 if(opts.lastName) d3.select('.last-name').text(opts.lastName)
 else d3.select('.last-name').style('opacity', 0).text('..')
 
-  // var color1, color2;
-  // if(opts.bg === "light") {
-  //   color1 = "#a0a0a0"
-  //   color2 = "#333"
+   var color1, color2;
+   if(opts.bg === "light") {
+     color1 = "#a0a0a0"
+     color2 = "#333"
 
-  // } else {
-  //   color1 = "#e0e0e0";
-  //   color2 = "#fff"
-  // }
+   } else {
+     color1 = "#e0e0e0";
+     color2 = "#fff"
+   }
   
    var duration = opts.frameDelay * 10;
   var ease = "cubic";
    function infini() {
    d3.select("#masked")
-     .style("fill", "rgba(0,0,0,0.45)");
-     // .transition()
-     // .ease(ease)
-     // .duration(duration)
-     // .style("fill", color2)
-     // .each("end", function() {
-     //   d3.select("#masked")
-     //     .transition()
-     //     .ease(ease)
-     //     .duration(duration)
-     //     .style("fill", color1)
-     //     .each("end", infini)
-     // })
+     //.style("fill", "rgba(0,0,0,0.45)")
+     .style("fill", color1)
+      .transition()
+      .ease(ease)
+      .duration(duration)
+      .style("fill", color2)
+      .each("end", function() {
+        d3.select("#masked")
+          .transition()
+          .ease(ease)
+          .duration(duration)
+          .style("fill", color1)
+          .each("end", infini)
+      })
    }
    infini();
 
@@ -275,8 +275,18 @@ iframe.attr('src', opts.url)
 // green: rgba(77,175,74, 0.65)
 // blue: rgba(55,126,184, 0.65)
 
+d3.select(".first-name").style("font-size", "132px")
+.transition()
+.delay(opts.delay)
+.duration(duration)
+.style("font-size", "150px")
+console.log("FRAME DELAY", opts.frameDelay, opts.frameDelay * 10, duration)
 
-d3.select(".shade").transition().duration(7000).styleTween("background-color", function() { return interpolateRgba("rgba(0,0,0,0.45)", "rgba(77,175,74,0.65)"); });
+//d3.select(".shade").transition().duration(7000).styleTween("background-color", function() { return interpolateRgba("rgba(0,0,0,0.45)", "rgba(77,175,74,0.65)"); });
+d3.select(".shade").transition()
+.delay(opts.delay)
+  .duration(duration).styleTween("background-color", function() { 
+    return interpolateRgba("rgba(0,0,0,0.45)", "rgba(177,75,74,0.65)"); });
 
 function interpolateRgba(fromRgba, toRgba) {
     var fromRgb = rgb(fromRgba), toRgb = rgb(toRgba),

@@ -1,0 +1,446 @@
+var data = [
+	{
+        "harsh_accl_count": 0, 
+        "speed": 74.674, 
+        "start_time": "2015-01-30 12:06:00", 
+        "total_distance": 75919
+    },  
+    {
+        "harsh_accl_count": 2, 
+        "speed": 14.55, 
+        "start_time": "2015-04-28 14:51:00", 
+        "total_distance": 1455
+    }, 
+    {
+        "harsh_accl_count": 25, 
+        "speed": 14.89, 
+        "start_time": "2015-04-30 10:42:00", 
+        "total_distance": 5708
+    }, 
+    {
+        "harsh_accl_count": 12, 
+        "speed": 25.074, 
+        "start_time": "2015-04-30 11:32:00", 
+        "total_distance": 4179
+    }, 
+    {
+        "harsh_accl_count": 1, 
+        "speed": 17.301, 
+        "start_time": "2015-05-12 13:12:00", 
+        "total_distance": 11534
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 26.462, 
+        "start_time": "2015-05-12 13:55:00", 
+        "total_distance": 136281
+    }, 
+    {
+        "harsh_accl_count": 4, 
+        "speed": 11.785, 
+        "start_time": "2015-05-13 14:17:00", 
+        "total_distance": 136705
+    }, 
+    {
+        "harsh_accl_count": 1, 
+        "speed": 49.504, 
+        "start_time": "2015-05-14 13:04:00", 
+        "total_distance": 13201
+    }, 
+    {
+        "harsh_accl_count": 3, 
+        "speed": 6.883, 
+        "start_time": "2015-05-16 09:11:00", 
+        "total_distance": 5506
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 20.626, 
+        "start_time": "2015-05-21 11:32:00", 
+        "total_distance": 69098
+    }, 
+    {
+        "harsh_accl_count": 3, 
+        "speed": 19.202, 
+        "start_time": "2015-05-22 08:29:00", 
+        "total_distance": 11521
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 45.617, 
+        "start_time": "2015-05-22 12:18:00", 
+        "total_distance": 63104
+    }, 
+    {
+        "harsh_accl_count": 1, 
+        "speed": 45.677, 
+        "start_time": "2015-05-23 07:50:00", 
+        "total_distance": 49483
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 22.69, 
+        "start_time": "2015-05-23 10:12:00", 
+        "total_distance": 4538
+    }, 
+    {
+        "harsh_accl_count": 7, 
+        "speed": 17.31, 
+        "start_time": "2015-05-23 13:09:00", 
+        "total_distance": 4616
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 39.061, 
+        "start_time": "2015-05-24 13:18:00", 
+        "total_distance": 67054
+    }, 
+    {
+        "harsh_accl_count": 1, 
+        "speed": 42.127, 
+        "start_time": "2015-05-26 08:02:00", 
+        "total_distance": 58275
+    }, 
+    {
+        "harsh_accl_count": 3, 
+        "speed": 17.088, 
+        "start_time": "2015-05-26 13:29:00", 
+        "total_distance": 7405
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 15.858, 
+        "start_time": "2015-05-26 13:57:00", 
+        "total_distance": 69774
+    }, 
+    {
+        "harsh_accl_count": 1, 
+        "speed": 49.647, 
+        "start_time": "2015-05-27 07:08:00", 
+        "total_distance": 61231
+    }, 
+    {
+        "harsh_accl_count": 4, 
+        "speed": 13.505, 
+        "start_time": "2015-05-27 12:03:00", 
+        "total_distance": 8553
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 14.445, 
+        "start_time": "2015-05-27 12:42:00", 
+        "total_distance": 1926
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 10.829, 
+        "start_time": "2015-05-31 10:08:00", 
+        "total_distance": 4512
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 36.18, 
+        "start_time": "2015-05-31 10:59:00", 
+        "total_distance": 4824
+    }, 
+    {
+        "harsh_accl_count": 1, 
+        "speed": 54.453, 
+        "start_time": "2015-05-31 11:54:00", 
+        "total_distance": 9983
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 10.71, 
+        "start_time": "2015-05-31 12:39:00", 
+        "total_distance": 1428
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 68.435, 
+        "start_time": "2015-05-31 12:48:00", 
+        "total_distance": 13687
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 45.271, 
+        "start_time": "2015-05-31 13:10:00", 
+        "total_distance": 70924
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 36.974, 
+        "start_time": "2015-06-02 08:09:00", 
+        "total_distance": 52996
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 12.695, 
+        "start_time": "2015-06-02 10:01:00", 
+        "total_distance": 4020
+    }, 
+    {
+        "harsh_accl_count": 1, 
+        "speed": 15.928, 
+        "start_time": "2015-06-02 12:25:00", 
+        "total_distance": 10088
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 47.372, 
+        "start_time": "2015-06-02 13:10:00", 
+        "total_distance": 13422
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 50.093, 
+        "start_time": "2015-06-02 13:29:00", 
+        "total_distance": 71800
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 46.576, 
+        "start_time": "2015-06-03 07:58:00", 
+        "total_distance": 55115
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 29.63, 
+        "start_time": "2015-06-03 09:40:00", 
+        "total_distance": 2963
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 41.091, 
+        "start_time": "2015-06-03 09:57:00", 
+        "total_distance": 4794
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 10.616, 
+        "start_time": "2015-06-03 11:23:00", 
+        "total_distance": 5308
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 23.443, 
+        "start_time": "2015-06-03 12:22:00", 
+        "total_distance": 12112
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 18.65, 
+        "start_time": "2015-06-03 12:54:00", 
+        "total_distance": 1865
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 67.156, 
+        "start_time": "2015-06-03 13:03:00", 
+        "total_distance": 12312
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 10.396, 
+        "start_time": "2015-06-06 12:15:00", 
+        "total_distance": 5891
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 38.23, 
+        "start_time": "2015-06-06 13:05:00", 
+        "total_distance": 3823
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 64.586, 
+        "start_time": "2015-06-06 13:25:00", 
+        "total_distance": 68892
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 22.486, 
+        "start_time": "2015-06-07 12:10:00", 
+        "total_distance": 11618
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 39.137, 
+        "start_time": "2015-06-07 12:45:00", 
+        "total_distance": 75013
+    }, 
+    {
+        "harsh_accl_count": 1, 
+        "speed": 33.192, 
+        "start_time": "2015-06-08 08:53:00", 
+        "total_distance": 55874
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 66.707, 
+        "start_time": "2015-06-08 10:53:00", 
+        "total_distance": 41136
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 43.768, 
+        "start_time": "2015-06-09 08:16:00", 
+        "total_distance": 60546
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 55.705, 
+        "start_time": "2015-06-09 13:33:00", 
+        "total_distance": 15783
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 44.073, 
+        "start_time": "2015-06-09 13:55:00", 
+        "total_distance": 69783
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 11.543, 
+        "start_time": "2015-06-12 13:26:00", 
+        "total_distance": 1539
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 30.809, 
+        "start_time": "2015-06-13 08:41:00", 
+        "total_distance": 56996
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 6.498, 
+        "start_time": "2015-06-13 10:43:00", 
+        "total_distance": 5198
+    }, 
+    {
+        "harsh_accl_count": 2, 
+        "speed": 50.108, 
+        "start_time": "2015-06-16 07:49:00", 
+        "total_distance": 65140
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 14.717, 
+        "start_time": "2015-06-17 12:54:00", 
+        "total_distance": 1717
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 34.86, 
+        "start_time": "2015-06-17 13:04:00", 
+        "total_distance": 12201
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 26.508, 
+        "start_time": "2015-06-20 13:20:00", 
+        "total_distance": 4418
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 13.724, 
+        "start_time": "2015-06-20 13:56:00", 
+        "total_distance": 69307
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 49.829, 
+        "start_time": "2015-06-21 05:29:00", 
+        "total_distance": 65608
+    }, 
+    {
+        "harsh_accl_count": 1, 
+        "speed": 52.229, 
+        "start_time": "2015-06-21 06:50:00", 
+        "total_distance": 53970
+    }, 
+    {
+        "harsh_accl_count": 1, 
+        "speed": 12.043, 
+        "start_time": "2015-07-02 12:32:00", 
+        "total_distance": 4215
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 11.711, 
+        "start_time": "2015-07-02 13:30:00", 
+        "total_distance": 4099
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 69.799, 
+        "start_time": "2015-07-02 13:53:00", 
+        "total_distance": 69799
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 75.537, 
+        "start_time": "2015-07-03 07:43:00", 
+        "total_distance": 57912
+    }, 
+    {
+        "harsh_accl_count": 2, 
+        "speed": 29.545, 
+        "start_time": "2015-07-03 11:56:00", 
+        "total_distance": 64506
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 41.409, 
+        "start_time": "2015-07-04 07:57:00", 
+        "total_distance": 62803
+    }, 
+    {
+        "harsh_accl_count": 1, 
+        "speed": 17.433, 
+        "start_time": "2015-07-04 11:52:00", 
+        "total_distance": 5230
+    }, 
+    {
+        "harsh_accl_count": 1, 
+        "speed": 84.534, 
+        "start_time": "2015-07-04 12:31:00", 
+        "total_distance": 76081
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 50.027, 
+        "start_time": "2015-07-05 07:57:00", 
+        "total_distance": 62534
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 20.712, 
+        "start_time": "2015-07-07 13:21:00", 
+        "total_distance": 12427
+    }, 
+    {
+        "harsh_accl_count": 1, 
+        "speed": 39.863, 
+        "start_time": "2015-07-10 12:06:00", 
+        "total_distance": 68432
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 28.481, 
+        "start_time": "2015-07-10 14:00:00", 
+        "total_distance": 10443
+    }, 
+    {
+        "harsh_accl_count": 1, 
+        "speed": 30.388, 
+        "start_time": "2015-07-14 15:35:00", 
+        "total_distance": 21778
+    }, 
+    {
+        "harsh_accl_count": 0, 
+        "speed": 38.591, 
+        "start_time": "2015-07-21 05:44:00", 
+        "total_distance": 7075
+    }
+];

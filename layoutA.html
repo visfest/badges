@@ -181,7 +181,7 @@ svg.design {
           </mask>   
           </defs>
           <g transform="translate(0,30)">
-          <rect id="masked" x=0 y=0 width=1050 height=220 fill=#e0e0e0 mask="url(#masker)" rx=10 ry=10></rect>
+          <rect id="masked" x=0 y=0 width=1050 height=220 fill=#e0e0e0 mask="url(#masker)" rx=30 ry=30></rect>
           </g>
     
        </svg>
@@ -209,15 +209,14 @@ try{
   console.log("OPTS", opts)
 }catch(e){
   console.log("errr")
-  opts = {
-      url: opts
-    , firstName: 'Elijah'
-    , lastName: 'Meeks'
-    , githubName: 'emeeks'
-    , delay: 1000
-    , frameDelay: 400
-    , url: 'http://bl.ocks.org/enjalot/raw/25aeeb7e41f46271db58/'
-    , bg: "light"
+  var opts = {
+      firstName: 'Ken'
+    , lastName: 'Penn'
+    , githubName: 'kenpenn'
+    , delay: 800
+    , frameDelay: 100
+    , url: 'http://localhost:8888/badges/kenpenn/index.html'
+    , bg: "dark" // can also be "dark"
   }
   is_test = true
 }
