@@ -211,13 +211,13 @@ try{
 }catch(e){
   console.log("errr")
   var opts = {
-      firstName: 'Kai'
-    , lastName: 'Chang'
-    , githubName: 'syntagmatic'
+      firstName: 'First'
+    , lastName: 'Last'
+    , githubName: 'handle'
     , delay: 1000
     , frameDelay: 350
     , url: 'http://localhost:8888/badges/satellite/index.html'
-    , bg: "light" // can also be "dark"
+    , bg: 'light' // can also be "dark"
   }
   is_test = true
 }
@@ -267,8 +267,7 @@ else d3.select('.last-name').style('opacity', 0).text('..')
 
 iframe.attr('src', opts.url)
   .on('load', function(){
-    // d3.select("")
-    take_badge_pic();
+    // take_badge_pic();
   });
 
 // red: rgba(228,26,28, 0.65)

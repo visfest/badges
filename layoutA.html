@@ -210,9 +210,9 @@ try{
 }catch(e){
   console.log("errr")
   var opts = {
-      firstName: 'Ken'
-    , lastName: 'Penn'
-    , githubName: 'kenpenn'
+      firstName: 'First'
+    , lastName: 'Last'
+    , githubName: 'handle'
     , delay: 800
     , frameDelay: 100
     , url: 'http://localhost:8888/badges/kenpenn/index.html'
@@ -265,8 +265,7 @@ else d3.select('.last-name').style('opacity', 0).text('..')
 
 iframe.attr('src', opts.url)
   .on('load', function(){
-    d3.select("")
-    take_badge_pic();
+    // take_badge_pic();
   });
 
     </script>

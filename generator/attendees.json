@@ -1,0 +1,17 @@
+[{
+  "firstName": "Kai",
+  "lastName": "Chang",
+  "githubName": "syntagmatic",
+  "delay": 1000,
+  "frameDelay": 350,
+  "url": "http://bl.ocks.org/enjalot/raw/ddbbb63bde26d54f627e/",
+  "bg": "light" 
+}, {
+  "firstName": "Kai",
+  "lastName": "Chang",
+  "githubName": "syntagmatic",
+  "delay": 1000,
+  "frameDelay": 350,
+  "url": "http://localhost:8888/badges/satellite/index.html",
+  "bg": "light"
+}]
