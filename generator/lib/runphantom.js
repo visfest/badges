@@ -30,9 +30,12 @@ function gif(name, done){
   console.log("next", next)
   console.log('creating gif for ' + next.githubName)
   setTimeout(function() {
+    phantom(next.githubName, process)
+    /*
     phantom(next.githubName, function(err){
       if(err) throw err
       gif(next.githubName, process)
     })
+    */
   }, 500)
 })()
