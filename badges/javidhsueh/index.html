@@ -4,7 +4,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
   <script src="data.json"></script>
   <style>
-    body { margin:0;position:fixed;top:0;right:0;bottom:0;left:0; }
+    body { margin:0;position:fixed;top:0;right:0;bottom:0;left:0; 
+        background-color: white;}
     svg { width: 100%; height: 100%; }
   </style>
 </head>
@@ -26,23 +27,15 @@
     };
 
     window.requestAnimFrame = (function requestAnimFrame(){
-        return  window.requestAnimationFrame   ||
-            window.webkitRequestAnimationFrame ||
-            window.mozRequestAnimationFrame    ||
-            window.oRequestAnimationFrame      ||
-            window.msRequestAnimationFrame     ||
-            function(callback, element){
-                return window.setTimeout(callback, 1000 / 60);
+        return  function(callback, element){
+            console.log("sup?")
+                return window.setTimeout(callback, 20);
             };
     })();
 
+
     window.cancelRequestAnimFrame = ( function cancelRequestAnimFrame() {
-        return window.cancelAnimationFrame              ||
-            window.webkitCancelRequestAnimationFrame    ||
-            window.mozCancelRequestAnimationFrame       ||
-            window.oCancelRequestAnimationFrame         ||
-            window.msCancelRequestAnimationFrame        ||
-            clearTimeout;
+        return clearTimeout;
     } )();
 
     var containerID = 'container';
@@ -97,12 +90,12 @@
         .style('position','relative');
 
     var svg = container
-        .insert('svg:svg')
+        .insert('svg')
         .attr('width', containerWidth)
         .attr('height', containerHeight);
-    var g = svg.append('svg:g')
+    var g = svg.append('g')
         .attr('transform', 'translate(' +
-        containerWidth / 2 + ',' + containerHeight / 2 + ')');
+        containerWidth / 2 + ',' + (containerHeight / 2 + 150) + ')');
 
     // layout calculation
     var degree_unit = 360 / total_trips;
@@ -122,7 +115,7 @@
     g.selectAll('.slice_svg')
         .data(trips)
         .enter()
-        .append('svg:g')
+        .append('g')
         .attr('class','slice_svg')
         .each(function iterator(trip, idx) {
             var inner_radius = scaled_inner_radius;
@@ -142,6 +135,7 @@
 
     function set_trip_motion(trip, trip_idx, self_svg) {
         // when update the data, should stop previous sprite
+        console.log(trip.sprite)
         if (trip.sprite) {
             cancelRequestAnimFrame(trip.sprite);
         }
@@ -164,13 +158,31 @@
         var shrink_radius = [inner_radius - movement,
             inner_radius - movement + bar_length];
 
+            console.log("suppp")
+            function gogo() {
+                now = Date.now();
+                delta = now - then;
+                if (delta > interval) {
+                    direction_flag = !direction_flag;
+                    var radius = direction_flag? expand_radius: shrink_radius;
+                    self_svg.select('.segment')
+                        .attr('transform', 'rotate(' +
+                        (self_trip.mid_degree * 180 / Math.PI - 90) +
+                        ')  translate(' + radius[0] + ')');
+                    then = now;
+                }
+                setTimeout(gogo,200)
+            }
+            setTimeout(gogo,200)
+            /*
         trip.sprite_function =  function sprite_function() {
+            console.log("in func")
             now = Date.now();
             delta = now - then;
             if (delta > interval) {
                 var radius = direction_flag? expand_radius: shrink_radius;
                 self_svg.select('.segment')
-                    .transition().duration(interval)
+                    //.transition().duration(interval)
                     .attr('transform', 'rotate(' +
                         (self_trip.mid_degree * 180 / Math.PI - 90) +
                         ')  translate(' + radius[0] + ')');
@@ -181,6 +193,7 @@
         };
         // start sprite
         trip.sprite = requestAnimationFrame(trip.sprite_function);
+            */
     }
 
 

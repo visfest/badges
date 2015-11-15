@@ -206,7 +206,7 @@ var opts = decodeURIComponent(window.location.hash.split('#')[1] || '')
 var is_test = false
 try{
   opts = JSON.parse(opts)
-  console.log("OPTS", opts)
+  //console.log("OPTS", opts)
 }catch(e){
   console.log("errr")
   var opts = {
@@ -215,7 +215,10 @@ try{
     , githubName: 'handle'
     , delay: 800
     , frameDelay: 100
-    , url: 'http://localhost:8888/badges/kenpenn/index.html'
+    //, url: 'http://localhost:8888/badges/data/index.html'
+    //, url: 'http://localhost:8888/badges/code/index.html'
+    //, url: 'http://localhost:8888/badges/design/index.html'
+    , url: 'http://localhost:8888/badges/dlwjiang/index.html'
     , bg: "dark" // can also be "dark"
   }
   is_test = true

@@ -1,0 +1,137 @@
+<!doctype html>
+
+<html>
+  <style>
+    line {
+      stroke-width: 2.5px;
+    }
+
+    body {
+      background-color: #111;
+    }
+  </style>
+  <body>
+  <script src="../d3.v3.min.js" charset="utf-8"></script>
+  <script>
+    // heavily influenced by http://bl.ocks.org/mbostock/1582075
+    var width = 1050,
+        height = 1500;
+
+    var svg = d3.select('body').append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+    var centreX = width/2,
+        centreY = height/2 + 100;
+
+    var length = 300;
+
+    var shuffle = function (array) {
+      var m = array.length, t, i;
+
+      // While there remain elements to shuffle…
+      while (m) {
+
+        // Pick a remaining element…
+        i = Math.floor(Math.random() * m--);
+
+        // And swap it with the current element.
+        t = array[m];
+        array[m] = array[i];
+        array[i] = t;
+      }
+
+      return array;
+    }
+
+    var reset = function () {
+      hueValues = shuffle(d3.range(0, 360));
+      hueAndAngles = d3.range(0, 360).map(function (d) {
+        return {
+          angle: d,
+          hue: hueValues[d]
+        };
+      });
+    };
+
+    var draw = function () {
+      var line = svg.selectAll('line')
+          .data(hueAndAngles);
+
+      line.enter().append('line');
+
+      line
+          .attr('stroke', function (d) { return 'hsl(' + d.hue + ',50%,50%)';})
+          .attr('x1', centreX)
+          .attr('y1', centreY)
+          .attr('x2', function (d) { return centreX + Math.cos(d.angle * 0.01745) * length; })
+          .attr('y2', function (d) { return centreY + Math.sin(d.angle * 0.01745) * length; });
+    };
+
+
+    var quicksort = function (array) {
+      var actions = [];
+
+      function partition(left, right, pivot) {
+        var v = array[pivot];
+        swap(pivot, --right);
+        for (var i = left; i < right; ++i) if (array[i] <= v) swap(i, left++);
+        swap(left, right);
+        return left;
+      }
+
+      function swap(i, j) {
+        var t = array[i];
+        array[i] = array[j];
+        array[j] = t;
+        actions.push({type: "swap", i: i, j: j});
+      }
+
+      function recurse(left, right) {
+        if (left < right) {
+          var pivot = left + ~~(Math.random() * (right - left));
+          actions.push({type: "partition", pivot: pivot});
+          pivot = partition(left, right, pivot);
+          recurse(left, pivot);
+          recurse(pivot + 1, right);
+        }
+      }
+
+      recurse(0, array.length);
+      return actions;
+    }
+
+    var sort = function () {
+      reset();
+      draw();
+
+      actions = quicksort(hueAndAngles.map(function(d) {
+        return d.hue;
+      })).reverse();
+
+      function step() {
+        var intervalId = setInterval(function () {
+          var action = actions.pop();
+          if (action) switch (action.type) {
+            case "partition": {
+              step();
+              break;
+            }
+            case "swap": {
+              var t = hueAndAngles[action.i].hue;
+              hueAndAngles[action.i].hue = hueAndAngles[action.j].hue;
+              hueAndAngles[action.j].hue = t;
+
+              draw();
+              break;
+            }
+          }
+        }, 10);
+      };
+
+      step();
+    }
+
+    sort()
+  </script>
+</html>
