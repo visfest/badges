@@ -27,7 +27,12 @@ attendees.forEach(function(a) {
       })
     });
   }
+  
 })
+if(!user) {
+  console.log("couldnt find", github)
+  phantom.exit()
+}
 
 function useDesign(opts) {
   opts.delay = 1100;
@@ -47,6 +52,11 @@ function useData(opts) {
   opts.url = 'http://bl.ocks.org/enjalot/raw/0610ef19ff223eef102d/'
   opts.bg = "dark" // can also be "dark"
 }
+function useCustom(opts) {
+  if(!opts.delay) opts.delay = 1000;
+  if(!opts.frameDelay) opts.frameDelay = 250;
+  opts.url = opts.custom
+}
 
 function gif(name, done){
   var dir = 'output/badges'
@@ -56,7 +66,7 @@ function gif(name, done){
   //convert.stderr.pipe(process.stderr)
   convert.on('close', done)
   convert.on('error', done)
-  setTimeout(done, 10000)
+  setTimeout(done, 5000)
 }
 
 function create_badge_url(opts){
@@ -67,20 +77,25 @@ function create_badge_url(opts){
 
 function take_badge_pic(opts, done){
   //console.log('about to open a page', JSON.stringify(opts))
+  console.log("custom", opts.custom)
 
-  if(opts.dadeco === "data") {
-    useData(opts)
-  } else if(opts.dadeco ==="code") {
-    useCode(opts);
-  } else {
-    useDesign(opts);
-  }
   if(opts.custom){
     useCustom(opts)
+  }else {
+    console.log("else???")
+    if(opts.images) {
+      useImages(opts)
+    } else {
+      if(opts.dadeco === "data") {
+        useData(opts)
+      } else if(opts.dadeco ==="code") {
+        useCode(opts);
+      } else {
+        useDesign(opts);
+      }
+    }
   }
-  if(opts.images) {
-    useImages(opts)
-  }
+  
   var url = create_badge_url(opts);
   var delay = opts.delay || 666;
   var frameDelay = opts.frameDelay || 215
@@ -93,6 +108,7 @@ function take_badge_pic(opts, done){
   page.open(url, function(status){
     //console.log('open page',url);
     console.log('status', status);
+    console.log("opts", JSON.stringify(opts))
 
       setTimeout(function() {
           // Initial frame

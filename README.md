@@ -47,12 +47,26 @@ https://thenounproject.com/search/?q=coding&i=1171
 ### In order to generate a GIF first call the phantom.js from the console. This scripts
 captures 10 images (JPGs) from a certain webpage as defined in index.html:
 ````
-phantomjs lib/index.js
+cd generator
+phantomjs lib/runounce.js USERNAME
+#e.g.
+phantomjs lib/runounce.js enjalot
 ````
+
+this requires you have  `generator/data/attendees.json`  
+You can also generate all the badges at once  
+```
+node lib/runphantom.js
+```
+These commands will output to `output/badges` (make sure the badges directory exists)
+
+
+
+
 ### After generating the JPGs we generate the actual GIF from the JPG frames.
 We use the **convert** command which comes with Imagemagick
 ````
-convert -loop 0 output/test-*.jpeg test.gif
+convert -loop 0 output/test-*.jpg test.gif
 ````
 
 
